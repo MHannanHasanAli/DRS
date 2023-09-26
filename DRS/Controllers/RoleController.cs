@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using UModule.Models;
-using UModule.Services;
-using UModule.ViewModels;
-using UModule.Entities;
+using DRS.Models;
+using DRS.Services;
+using DRS.ViewModels;
+using DRS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace UModule.Controllers
+namespace DRS.Controllers
 {
     public class RoleController : Controller
     {

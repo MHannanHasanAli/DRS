@@ -6,10 +6,10 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using UModule.Models;
-using UModule.Services;
+using DRS.Models;
+using DRS.Services;
 
-namespace UModule.Controllers
+namespace DRS.Controllers
 {
     [Authorize]
     public class ManageController : Controller

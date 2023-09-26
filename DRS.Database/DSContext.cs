@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
-using UModule.Entities;
+using DRS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UModule.Database
+namespace DRS.Database
 {
     public class DSContext :IdentityDbContext<User>,IDisposable
     {
@@ -21,6 +21,16 @@ namespace UModule.Database
             return new DSContext();
         }
 
+        public DbSet<Brand> brands { get; set; }
+        public DbSet<Branch> branches { get; set; }
+
+        public DbSet<Supplier> suppliers { get; set; }
+        public DbSet<Supplier_Brand> supplierbrands { get; set; }
+        public DbSet<Customer> customers { get; set; }
+
+        public DbSet<Order> orders { get; set; }
+
+        public DbSet<Order_Item> orderitems { get; set; }
 
 
 

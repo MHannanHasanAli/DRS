@@ -1,4 +1,4 @@
-﻿namespace UModule.Database.Migrations
+﻿namespace DRS.Database.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
@@ -7,6 +7,32 @@
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.Brands",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        Logo = c.String(),
+                        Description = c.String(),
+                        Note = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
+                "dbo.Customers",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        Logo = c.String(),
+                        Alias = c.String(),
+                        Description = c.String(),
+                        Telephone = c.String(),
+                        Whatsapp = c.String(),
+                        Email = c.String(),
+                        Note = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
             CreateTable(
                 "dbo.AspNetRoles",
                 c => new
@@ -29,6 +55,33 @@
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.Supplier_Brand",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        IDSupplier = c.Int(nullable: false),
+                        IDBrand = c.Int(nullable: false),
+                        Default = c.String(),
+                        Note = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
+                "dbo.Suppliers",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        Logo = c.String(),
+                        Description = c.String(),
+                        Telephone = c.String(),
+                        Whatsapp = c.String(),
+                        Email = c.String(),
+                        Contact = c.String(),
+                        Note = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -95,8 +148,12 @@
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
+            DropTable("dbo.Suppliers");
+            DropTable("dbo.Supplier_Brand");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Customers");
+            DropTable("dbo.Brands");
         }
     }
 }

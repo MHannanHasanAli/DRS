@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace UModule.Models
+namespace DRS.Models
 {
     public class ExternalLoginConfirmationViewModel
     {

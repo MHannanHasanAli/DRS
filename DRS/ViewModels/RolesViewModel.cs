@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace UModule.ViewModels
+namespace DRS.ViewModels
 {
     public class RoleListingViewModel
     {

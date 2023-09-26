@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using UModule.Entities;
+using DRS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UModule.Services
+namespace DRS.Services
 {
     public class AMSignInManager : SignInManager<User, string>
     {

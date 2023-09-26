@@ -1,18 +1,18 @@
-﻿namespace UModule.Database.Migrations
+﻿namespace DRS.Database.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<UModule.Database.DSContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<DRS.Database.DSContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(UModule.Database.DSContext context)
+        protected override void Seed(DRS.Database.DSContext context)
         {
             //  This method will be called after migrating to the latest version.
 

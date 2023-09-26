@@ -2,15 +2,15 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using UModule.Database;
-using UModule.Entities;
+using DRS.Database;
+using DRS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UModule.Services
+namespace DRS.Services
 {
     public class AMUserManager : UserManager<User>
     {

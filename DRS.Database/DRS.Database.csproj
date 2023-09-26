@@ -8,8 +8,8 @@
     <ProjectGuid>{1627DC5E-E0E0-4B90-A971-30664D250B9D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UModule.Database</RootNamespace>
-    <AssemblyName>UModule.Database</AssemblyName>
+    <RootNamespace>DRS.Database</RootNamespace>
+    <AssemblyName>DRS.Database</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -57,9 +57,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\202309261050359_Goku.cs" />
-    <Compile Include="Migrations\202309261050359_Goku.designer.cs">
-      <DependentUpon>202309261050359_Goku.cs</DependentUpon>
+    <Compile Include="Migrations\202309261117285_Goku.cs" />
+    <Compile Include="Migrations\202309261117285_Goku.designer.cs">
+      <DependentUpon>202309261117285_Goku.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309261125272_Vegeta.cs" />
+    <Compile Include="Migrations\202309261125272_Vegeta.designer.cs">
+      <DependentUpon>202309261125272_Vegeta.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,15 +74,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\202309261117285_Goku.resx">
+      <DependentUpon>202309261117285_Goku.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309261125272_Vegeta.resx">
+      <DependentUpon>202309261125272_Vegeta.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DRS.Entities\DRS.Entities.csproj">
       <Project>{d708eba2-38f4-4bc2-b11a-13e31489770b}</Project>
       <Name>DRS.Entities</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202309261050359_Goku.resx">
-      <DependentUpon>202309261050359_Goku.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

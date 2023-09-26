@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UModule.Entities
+namespace DRS.Entities
 {
     public class User : IdentityUser
     {

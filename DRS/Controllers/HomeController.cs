@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using UModule.Services;
-using UModule.ViewModels;
+using DRS.Services;
+using DRS.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace UModule.Controllers
+namespace DRS.Controllers
 {
     public class HomeController : Controller
     {

@@ -1,0 +1,165 @@
+﻿@model DRS.ViewModels.BrandListingViewModel
+
+@{
+}
+<style>
+    .addbtn {
+        border-radius: 50%;
+        padding: 10px;
+        background: black;
+        color: white;
+        border: 1px solid black;
+    }
+
+    .container-top {
+        display: flex;
+    }
+
+    .fa-download {
+        color: blue; /* Set the default color to blue */
+        transition: color 0.3s; /* Add a smooth color transition */
+    }
+
+        .fa-download:hover {
+            color: black; /* Change the color to black on hover */
+        }
+
+    .dataTables_filter {
+        float: right;
+    }
+
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body  container-top">
+            <div>
+                <h2>Brand </h2>
+            </div>
+            <div>
+                <form>
+
+                    <div class="input-group">
+
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <a href="@Url.Action("Action", "Brand")" class=" btn btn-primary"><i class="fas fa-plus"></i>&nbsp; Add Brand</a>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @if (Model.Brands != null)
+    {
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    
+
+                        <div class="card col-md-12">
+
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Actions</th>
+                                            <th>Logo</th>
+                                            <th>Description</th>                                          
+                                            <th>Note</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Brands)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-rounded btn-secondary btn-icon-text dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fa fa-list" aria-hidden="true"></i>
+
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                            <a class="dropdown-item" href="@Url.Action("Action", "Brand", new { ID = item.ID })">
+                                                                <i class="mdi mdi-pencil"></i> VIEW/EDIT
+                                                            </a>
+                                                            @*<button data-href="@Url.Action("Delete", "Brand", new { ID = item.ID })" class="dropdown-item data-btn btn btn-danger btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>*@
+
+                                                            <a class="data-btn dropdown-item" data-href="@Url.Action("Delete", "Brand", new { ID = item.ID })" data-toggle="modal" data-target="#actionModal">
+                                                                <i class="mdi mdi-delete"></i> DELETE
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    @if (item.Logo != null)
+                                                    {
+                                                        <img style="height:50px; width:50px;" src="@item.Logo" />
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <img style="height:50px; width:50px;" src="~/Content/DRS Content/Images/download.png" />
+
+                                                    }
+                                                </td>
+                                                <td>@item.Description</td>
+                                                <td>@item.Note</td>
+                                                @*<td>@item._File</td>*@
+                                                @*<td>
+                                                        <a class="btn" href="@Url.Action("DownloadFile", "Shared", new { path = item._File })">
+                                                            <i class="fa fa-download" aria-hidden="true"></i>
+                                                        </a>
+                                                    </td>*@
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                   
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+    }
+    else
+    {
+
+        <div class="alert alert-warning col-md-12" role="alert">
+            Sorry! No records exist.
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#example1").DataTable({
+
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["csv", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    });
+    $(".data-btn").click(function () {
+        $.ajax({
+            url: $(this).attr("data-href"),
+        })
+            .done(function (response) {
+                $("#actionModal .modal-dialog").html(response);
+            });
+    });
+</script>
+
+

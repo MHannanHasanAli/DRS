@@ -2,14 +2,14 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using UModule.Database;
+using DRS.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UModule.Services
+namespace DRS.Services
 {
     public class AMRolesManager : RoleManager<IdentityRole>
     {

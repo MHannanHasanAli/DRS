@@ -5,12 +5,12 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using UModule.Database;
-using UModule.Models;
-using UModule.Services;
-using UModule.Entities;
+using DRS.Database;
+using DRS.Models;
+using DRS.Services;
+using DRS.Entities;
 
-namespace UModule
+namespace DRS
 {
     public partial class Startup
     {

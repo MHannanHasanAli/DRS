@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using UModule.Services;
-using UModule.ViewModels;
-using UModule.Entities;
+using DRS.Services;
+using DRS.ViewModels;
+using DRS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace UModule.Controllers
+namespace DRS.Controllers
 {
     public class AdminController : Controller
     {
