@@ -13,7 +13,7 @@ namespace DRS.Database.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202309261117285_Goku"; }
+            get { return "202309270344292_Goku"; }
         }
         
         string IMigrationMetadata.Source

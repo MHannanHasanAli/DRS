@@ -60,47 +60,55 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="_Supplier_Brand">Supplier_Brand:</label>
-                                    <select class="form-control" name="_Supplier_Brand" id="_Supplier_Brand">
+                                    <label for="IDBrand">Brand:</label>
+                                    <select class="form-control" name="IDBrand" id="IDBrand">
                                         @foreach (var item in Model.Brands)
                                         {
-                                            if (item.ID == Model.ID)
-                                            {
-                                                <option selected value="@item.ID">@item.Description</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@item.ID">@item.Description</option>
-
-                                            }
+                                            <option value="@item.ID" @(item.ID == Model.IDBrand ? "selected" : "")>@item.Description</option>
                                         }
                                     </select>
                                 </div>
                             </div>
+
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="_Supplier_Brand">Supplier_Brand:</label>
-                                    <select class="form-control" name="_Supplier_Brand" id="_Supplier_Brand">
+                                    <label for="IDSupplier">Supplier:</label>
+                                    <select class="form-control" name="IDSupplier" id="IDSupplier">
                                         @foreach (var item in Model.Supplier)
                                         {
-                                            if (item.ID == Model.ID)
-                                            {
-                                                <option selected value="@item.ID">@item.Description</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@item.ID">@item.Description</option>
-
-                                            }
+                                            <option value="@item.ID" @(item.ID == Model.IDSupplier ? "selected" : "")>@item.Description</option>
                                         }
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-3">
-                                <label for="Description">Default&nbsp;</label>
-                                <input value="@Model.Default" type="checkbox" class="form-control" name="Description" id="Description" />
-                            </div>
+                            @if (Model.ID != 0)
+                            {
+                                if (Model.Default == "on")
+                                {
+                                    <div class="form-group col-md-3">
+                                        <label for="Default">Default&nbsp;</label>
+                                        <input type="checkbox" class="form-control" name="Default" id="Default" checked="checked" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group col-md-3">
+                                        <label for="Default">Default&nbsp;</label>
+                                        <input type="checkbox" class="form-control" name="Default" id="Default" />
+                                    </div>
+                                }
+
+                            }
+                            else
+                            {
+                                <div class="form-group col-md-3">
+                                    <label for="Default">Default&nbsp;</label>
+                                    <input type="checkbox" class="form-control" name="Default" id="Default" />
+                                </div>
+
+                            }
+
                             <div class="form-group col-md-7">
                                 <label for="Note">Note &nbsp;</label>
                                 <input value="@Model.Note" type="text" class="form-control" name="Note" id="Note" />

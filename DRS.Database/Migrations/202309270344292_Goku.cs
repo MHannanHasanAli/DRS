@@ -8,6 +8,19 @@
         public override void Up()
         {
             CreateTable(
+                "dbo.Branches",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        Description = c.String(),
+                        Telephone = c.String(),
+                        Whatsapp = c.String(),
+                        Email = c.String(),
+                        Note = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
                 "dbo.Brands",
                 c => new
                     {
@@ -29,6 +42,38 @@
                         Telephone = c.String(),
                         Whatsapp = c.String(),
                         Email = c.String(),
+                        Note = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
+                "dbo.Order_Item",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        IDOrder = c.Int(nullable: false),
+                        ItemCode = c.String(),
+                        Description = c.String(),
+                        Quantity = c.Int(nullable: false),
+                        Note = c.String(),
+                        DateOrder = c.DateTime(nullable: false),
+                        DateExpected = c.String(),
+                        Attachment = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
+                "dbo.Orders",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        IDBranch = c.Int(nullable: false),
+                        IDUser = c.String(),
+                        IDCustomer = c.Int(nullable: false),
+                        IDBrand = c.Int(nullable: false),
+                        IDSupplier = c.Int(nullable: false),
+                        Plate = c.String(),
+                        Chassis = c.String(),
                         Note = c.String(),
                     })
                 .PrimaryKey(t => t.ID);
@@ -63,7 +108,7 @@
                         ID = c.Int(nullable: false, identity: true),
                         IDSupplier = c.Int(nullable: false),
                         IDBrand = c.Int(nullable: false),
-                        Default = c.String(),
+                        Default = c.Boolean(nullable: false),
                         Note = c.String(),
                     })
                 .PrimaryKey(t => t.ID);
@@ -152,8 +197,11 @@
             DropTable("dbo.Supplier_Brand");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Orders");
+            DropTable("dbo.Order_Item");
             DropTable("dbo.Customers");
             DropTable("dbo.Brands");
+            DropTable("dbo.Branches");
         }
     }
 }

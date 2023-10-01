@@ -11,9 +11,23 @@ namespace DRS.ViewModels
     }
     public class Supplier_BrandListingViewModel
     {
-        public List<Supplier_Brand> Supplier_Brands { get; set; }
-        public List<string> Brandlogo { get; set; }
+        public List<DisplayModelForRelation> BrandListing { get; set; }
+           
+        //public string BrandLogo { get; set; }
+        //public string BrandDescription { get; set; }
+        //public string SupplierDescription { get; set; }
+        //public string Default { get; set; }
+        //public string Note { get; set; }
 
+    }
+    public class DisplayModelForRelation
+    {
+        public int ID { get; set; }
+        public string BrandLogo { get; set; }
+        public string BrandDescription { get; set; }
+        public string SupplierDescription { get; set; }
+        public string Default { get; set; }
+        public string Note { get; set; }
     }
 
     public class Supplier_BrandActionViewModel

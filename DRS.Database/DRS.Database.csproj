@@ -57,13 +57,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\202309261117285_Goku.cs" />
-    <Compile Include="Migrations\202309261117285_Goku.designer.cs">
-      <DependentUpon>202309261117285_Goku.cs</DependentUpon>
+    <Compile Include="Migrations\202309270344292_Goku.cs" />
+    <Compile Include="Migrations\202309270344292_Goku.designer.cs">
+      <DependentUpon>202309270344292_Goku.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202309261125272_Vegeta.cs" />
-    <Compile Include="Migrations\202309261125272_Vegeta.designer.cs">
-      <DependentUpon>202309261125272_Vegeta.cs</DependentUpon>
+    <Compile Include="Migrations\202309270359273_Vegeta.cs" />
+    <Compile Include="Migrations\202309270359273_Vegeta.designer.cs">
+      <DependentUpon>202309270359273_Vegeta.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,18 +74,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202309261117285_Goku.resx">
-      <DependentUpon>202309261117285_Goku.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202309261125272_Vegeta.resx">
-      <DependentUpon>202309261125272_Vegeta.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DRS.Entities\DRS.Entities.csproj">
       <Project>{d708eba2-38f4-4bc2-b11a-13e31489770b}</Project>
       <Name>DRS.Entities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202309270344292_Goku.resx">
+      <DependentUpon>202309270344292_Goku.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309270359273_Vegeta.resx">
+      <DependentUpon>202309270359273_Vegeta.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
