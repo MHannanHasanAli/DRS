@@ -28,4 +28,12 @@ namespace DRS.ViewModels
         public string Chassis { get; set; }
         public string Note { get; set; }
     }
+
+    public class OrderProductModel
+    {
+        public string ItemId { get; set; }
+        public string Quantity { get; set; }
+        public string Name { get; set; }
+        public string Note { get; set; }
+    }
 }

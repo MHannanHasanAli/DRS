@@ -251,6 +251,18 @@
     $("#actionButton").click(function () {
         $("#actionButton").attr("disabled", "disabled");
         showLoadingSpinner();
+        var products = [];
+        $('#ProductsTable tbody tr').each(function () {
+            var product = {
+                ItemId: $(this).find('td:eq(1)').val(),
+                Quantity: $(this).find('td:eq(2) input').val(),
+                Name: $(this).find('td:eq(3) input').val(),
+                Note: $(this).find('td:eq(4) input').val(),
+            };
+
+            products.push(product);
+        });
+        var productsJson = JSON.stringify(products);
 
 		$.ajax({
 			url: '@Url.Action("Action", "Order")',
@@ -260,7 +272,21 @@
             .done(function (response) {
 			if(response.success)
 			{
-				window.location.href = "@Url.Action("Index", "Order")";
+				 $.ajax({
+			url: '@Url.Action("ActionProducts", "Order")',
+			type: "post",
+            data: { products: productsJson}, // Send serialized string as parameter
+        })
+            .done(function (response) {
+			if(response.success)
+			{
+            window.location.href = "@Url.Action("Index", "Order")";
+
+			}
+			else {
+				$(".errorDiv").html(response.Message);
+                }
+            });
 			}
 			else {
 				$(".errorDiv").html(response.Message);

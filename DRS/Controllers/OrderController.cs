@@ -3,6 +3,7 @@ using DRS.Services;
 using DRS.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,6 +91,38 @@ namespace DRS.Controllers
             }
             // Return the supplier data as JSON
             return Json(supplierList, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ActionProducts(string products)
+        {
+
+            var Orderid = OrderServices.Instance.GetLastOrderId();
+            var ListOfInventory = JsonConvert.DeserializeObject<List<OrderProductModel>>(products);
+            var OrderItem = new Order_Item();
+            foreach (var item in ListOfInventory)
+            {
+                if (item.Quantity == null)
+                {
+                    item.Quantity = "0";
+                }
+                if (item.ItemId == null)
+                {
+                    item.ItemId = "0";
+                }
+                if (item.Name == null)
+                {
+                    item.Name = "No Name";
+                }
+
+                OrderItem.IDOrder = Orderid;
+                OrderItem.Note = item.Note;
+                OrderItem.Description = item.Name;
+                OrderItem.Quantity = int.Parse(item.Quantity);
+                OrderItem.DateOrder = DateTime.Now;
+
+                Order_ItemServices.Instance.CreateOrder_Item(OrderItem);
+
+            }
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult Index(string SearchTerm = "")
         {
