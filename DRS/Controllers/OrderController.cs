@@ -118,6 +118,7 @@ namespace DRS.Controllers
                 OrderItem.Description = item.Name;
                 OrderItem.Quantity = int.Parse(item.Quantity);
                 OrderItem.DateOrder = DateTime.Now;
+            
 
                 Order_ItemServices.Instance.CreateOrder_Item(OrderItem);
 
