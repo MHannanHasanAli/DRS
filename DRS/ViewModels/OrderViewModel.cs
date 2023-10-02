@@ -15,6 +15,9 @@ namespace DRS.ViewModels
     }
     public class OrderActionViewModel
     {
+        public List<Branch> Branches { get; set; }
+        public List<Customer> Customers { get; set; }
+        public List<Brand> Brands { get; set; }
         public int ID { get; set; }
         public int IDBranch { get; set; }
         public string IDUser { get; set; }

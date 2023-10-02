@@ -1,4 +1,5 @@
-﻿using DRS.Services;
+﻿using DRS.Entities;
+using DRS.Services;
 using DRS.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -61,6 +62,35 @@ namespace DRS.Controllers
             SignInManager = signInManager;
         }
         // GET: Order
+        [HttpPost] // You can use [HttpGet] if appropriate
+        public ActionResult GetSuppliersByBrand(int brandID)
+        {
+            var supplierList = new List<Supplier>();
+            var supplierids = new List<int>();
+            var suppliers = Supplier_BrandServices.Instance.GetSupplier_BrandsByBrandID(brandID);
+            
+            foreach (var item in suppliers)
+            {
+                if(item.Default == "on")
+                {
+                    supplierids.Add(item.IDSupplier);
+                }
+            }
+            foreach (var item in suppliers)
+            {
+                if (item.Default == "off")
+                {
+                    supplierids.Add(item.IDSupplier);
+                }
+            }
+            foreach (var item in supplierids)
+            {
+                var data = SupplierServices.Instance.GetSupplierById(item);
+                supplierList.Add(data);
+            }
+            // Return the supplier data as JSON
+            return Json(supplierList, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Index(string SearchTerm = "")
         {
             OrderListingViewModel model = new OrderListingViewModel();
@@ -88,6 +118,10 @@ namespace DRS.Controllers
                 model.IDUser = Order.IDUser;
 
             }
+            model.Branches = BranchServices.Instance.GetBranchs();
+            model.Customers = CustomerServices.Instance.GetCustomers();
+            model.Brands = BrandServices.Instance.GetBrands();
+
             return View("Action", model);
         }
 

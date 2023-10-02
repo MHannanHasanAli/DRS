@@ -34,6 +34,9 @@
         position: relative;
         left: -108px;
     }
+    .input-sm-custom {
+        width: 80px; /* Adjust the width as needed */
+    }
 </style>
 @if (Model != null)
 {
@@ -53,61 +56,148 @@
                 </h2>
 
             }
-            <div class="container">
-                <form id="actionForm">
-                    <div class="form-container">
-                        <input value="@Model.ID" type="hidden" class="form-control" name="ID" id="ID" />
-                        <div class="row">
-                            <div class="form-group col-md-3">
-                                <label>Product Image</label>
+        <div class="container">
+            <form id="actionForm">
+                <input value="@Model.ID" type="hidden" class="form-control" name="ID" id="ID" />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="IDBranch">Branch:</label>
+                            <select class="form-control" name="IDBranch" id="IDBranch">
+                                @foreach (var item in Model.Branches)
+                                {
+                                    if (item.ID == Model.IDBranch)
+                                    {
+                                        <option selected value="@item.ID">@item.Description</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.Description</option>
 
-                                <input class="form-control" value="@Model.Logo" name="Logo" id="_Photo" type="hidden" />
-                                <input class="form-control" id="PhotoUpload" name="PhotoUpload" type="file" accept=".png, .jpg, .jpeg" />
-
-                                <div class="thumb">
-                                    <img style="height:100px; width:100px" class="img-thumbnail img-fluid" id="PhotoImg" />
-                                </div>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="Description">Description&nbsp;</label>
-                                <input value="@Model.Description" type="text" class="form-control" name="Description" id="Description" />
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="Alias">Alias &nbsp;</label>
-                                <input value="@Model.Alias" type="text" class="form-control" name="Alias" id="Alias" />
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="Email">Email  &nbsp;</label>
-                                <input value="@Model.Email" type="text" class="form-control" name="Email" id="Email" />
-                            </div>
-                           
-
-                        </div>
-                        <div class="row setter">
-                            <div class="form-group col-md-3">
-                                <label for="Telephone">Telephone&nbsp;</label>
-                                <input value="@Model.Telephone" type="text" class="form-control" name="Telephone" id="Telephone" />
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="Whatsapp">Whatsapp &nbsp;</label>
-                                <input value="@Model.Whatsapp" type="text" class="form-control" name="Whatsapp" id="Whatsapp" />
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="Note">Note &nbsp;</label>
-                                <input value="@Model.Note" type="text" class="form-control" name="Note" id="Note" />
-                            </div>
-
+                                    }
+                                }
+                            </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="IDCustomer">Customer:</label>
+                            <select class="form-control" name="IDCustomer" id="IDCustomer">
+                                @foreach (var item in Model.Customers)
+                                {
+                                    if (item.ID == Model.IDCustomer)
+                                    {
+                                        <option selected value="@item.ID">@item.Description</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.Description</option>
 
-                </form>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="IDBrand">Brand:</label>
+                            <select class="form-control" name="IDBrand" id="IDBrand">
+                                @foreach (var item in Model.Brands)
+                                {
+                                    if (item.ID == Model.IDBrand)
+                                    {
+                                        <option selected value="@item.ID">@item.Description</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ID">@item.Description</option>
 
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="IDSupplier">Supplier:</label>
+                            <select class="form-control" name="IDSupplier" id="IDSupplier">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="Plate">Targa &nbsp;</label>
+                        <input value="@Model.Plate" type="text" class="form-control" name="Plate" id="Plate" oninput="convertToUppercase(this)" />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="Chassis">Telaio  &nbsp;</label>
+                        <input value="@Model.Chassis" type="text" class="form-control" name="Chassis" id="Chassis" oninput="convertToUppercase(this)" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="Note">Note&nbsp;</label>
+                        <input value="@Model.Note" type="text" class="form-control" name="Note" id="Note" />
+                    </div>
 
-
-                <div class="errorDiv">
 
                 </div>
+                <div class="row">
+                    <div class="col-md-12 table-responsive">
+                        <table class="table" id="ProductsTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        S.No
+                                    </th>
+
+                                    <th>
+                                        Order Code
+                                    </th>
+                                    <th>
+                                        Quantita
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @*@if (Model._Id != 0)
+                            {
+                                foreach (var item in Model.products)
+                                {
+                                    <tr>
+                                        <td>@item._Id</td>
+
+                                        <td>@item._SKU</td>
+                                        <td>@item._Title</td>
+                                        <td>
+                                            @Html.TextBox("_Date", Model._Date, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "_Date", @class = "form-control", type = "date" })
+                                        </td>
+                                        <td>@item._Qty</td>
+                                        <td>£@item._Price</td>
+                                        <td>£@item._Amount</td>
+                                    </tr>
+                                }
+                            }*@
+                            </tbody>
+                        </table>
+                        <hr />
+                        @*<h6 id="output">Total : @Model._Quantity</h6>
+                    <h6 id="totalAmount">Total Amount: £@Model._Amount</h6>
+                    <input name="_Quantity" id="_TotalQuantity" type="hidden" />
+                    <input name="_Amount" id="_TotalAmount" type="hidden" />*@
+                    </div>
+                </div>
+
+            </form>
+            <button id="AddItemButton" type="button" class="btn btn-primary">Add Item</button>
+
+
+
+            <div class="errorDiv">
+
             </div>
+        </div>
             <div style="background-color:white;" class="card-footer container-bottom">
                 <a href="@Url.Action("Index","Order")" class="btn btn-danger back"><i class="fas fa-times mr-1"></i> Cancel</a>
                 @if (Model.ID != 0)
@@ -127,7 +217,37 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    $(document).ready(function () {
+        appendProductToTable();
+        // Handle the change event of the IDBrand dropdown
+        $('#IDBrand').change(function () {
+            var selectedBrandID = $(this).val(); // Get the selected Brand ID
+            if (selectedBrandID !== "") {
+                // Make an AJAX request to the server to fetch suppliers by brand
+                $.ajax({
+                    url: '/Order/GetSuppliersByBrand', // Replace with the actual URL to your controller action
+                    type: 'POST', // or 'GET' depending on your server-side implementation
+                    data: { brandID: selectedBrandID }, // Send the selected Brand ID as a parameter
+                    success: function (data) {
+                        // Clear and populate the IDSupplier dropdown with the received data
+                        var IDSupplierDropdown = $('#IDSupplier');
+                        IDSupplierDropdown.empty();
 
+                        // Iterate through the received data and populate the dropdown
+                        $.each(data, function (index, supplier) {
+                            IDSupplierDropdown.append($('<option></option>').attr('value', supplier.ID).text(supplier.Description));
+                        });
+                    },
+                    error: function () {
+                        // Handle errors, if any
+                    }
+                });
+            }
+        });
+    });
+    function convertToUppercase(input) {
+        input.value = input.value.toUpperCase();
+    }
     $("#actionButton").click(function () {
         $("#actionButton").attr("disabled", "disabled");
         showLoadingSpinner();
@@ -147,7 +267,51 @@
 			}
 		});
     });
+    var productCounter = 1; // Initialize the product counter with 1
 
+    // Function to append a new product row to the table
+    function appendProductToTable() {
+        var lastSerialNumber = $('#ProductsTable tbody tr:last .serial-number').text().replace('#', '');
+
+        // If there are no rows, start with 1; otherwise, increment the last serial number
+        if (lastSerialNumber === '') {
+            lastSerialNumber = 0;
+        }
+
+        // Calculate the next serial number
+        var nextSerialNumber = parseInt(lastSerialNumber, 10) + 1;
+        var row = `
+        <tr>
+            <td class="serial-number">#${nextSerialNumber}</td>
+            <td><input type="text" id="OrderCode_${productCounter}" class="form-control form-control-sm input-sm-custom order-code-input" /></td>
+            <td><input type="text" id="Quantita_${productCounter}" class="form-control form-control-sm input-sm-custom" /></td>
+            <td><input type="text" id="Description_${productCounter}" class="form-control" /></td>
+            <td><input type="text" id="Note_${productCounter}" class="form-control form-control-lg" /></td>
+            <td><button class="btn btn-danger remove-row">Remove</button></td>
+        </tr>
+    `;
+
+        $('#ProductsTable tbody').append(row);
+        productCounter++; // Increment the product counter for the next row
+    }
+
+    // Attach a click event handler to remove rows and update serial numbers
+    $('#ProductsTable tbody').on('click', '.remove-row', function () {
+        $(this).closest('tr').remove(); // Remove the current row
+        updateSerialNumbers(); // Update serial numbers for remaining rows
+    });
+
+    // Function to update serial numbers
+    function updateSerialNumbers() {
+        $('#ProductsTable tbody tr').each(function (index) {
+            $(this).find('.serial-number').text('#' + (index + 1));
+        });
+    }
+
+    // Attach a click event handler to the "Add Item" button
+    $('#AddItemButton').click(function () {
+        appendProductToTable();
+    });
    $("#PhotoUpload").change(function () {
         var element = this;
         var formData = new FormData();

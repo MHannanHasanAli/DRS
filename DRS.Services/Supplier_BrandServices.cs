@@ -60,6 +60,15 @@ namespace DRS.Services
 
             }
         }
+        public List<Supplier_Brand> GetSupplier_BrandsByBrandID(int idBrand)
+        {
+            using (var context = new DSContext())
+            {
+                var data = context.supplierbrands.Where(sb => sb.IDBrand == idBrand).ToList();
+                data.Reverse();
+                return data;
+            }
+        }
         public List<Supplier_Brand> GetSupplier_Brands()
         {
             using (var context = new DSContext())
