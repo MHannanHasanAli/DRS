@@ -15,6 +15,13 @@ namespace DRS.Entities
         public string Note { get; set; }
         public DateTime DateOrder { get; set; } = DateTime.Now;
         public string DateExpected { get; set; }
-        public string Attachment { get; set; }
+        public bool Attachment { get; set; }
+        public string AlternativeCode { get; set; }
+        public DateTime Reminder1 { get; set; }
+        public DateTime Reminder2 { get; set; }
+        public DateTime Reminder3 { get; set; }
+        public DateTime DeliveryDate { get; set; }
+
+
     }
 }
