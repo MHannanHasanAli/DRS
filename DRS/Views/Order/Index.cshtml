@@ -1,5 +1,5 @@
 ﻿@model DRS.ViewModels.OrderListingViewModel
-
+@using System
 @{
 }
 <style>
@@ -27,7 +27,6 @@
     .dataTables_filter {
         float: right;
     }
-
 </style>
 
 <div class="container">
@@ -54,96 +53,124 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    
 
-                        <div class="card col-md-12">
 
-                            <!-- /.card-header -->
-                            <div class="card-body" style="overflow-x: auto;">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
+                    <div class="card col-md-12">
+
+                        <!-- /.card-header -->
+                        <div class="card-body" style="overflow-x: auto;">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Actions</th>
+                                        <th>Order Code</th>
+                                        <th>#N</th>
+                                        <th>Fornitore</th>
+                                        <th>Data Ordine</th>
+                                        <th>Marca</th>
+                                        <th>Targa</th>
+                                        <th>Telaio</th>
+                                        <th>Codice</th>
+                                        <th>Codice Alternativo</th>
+                                        <th>Descrizione</th>
+                                        <th>Qnt</th>
+                                        <th>Data Consegna Prevists</th>
+                                        <th>Alias</th>
+                                        <th>Cliente</th>
+                                        <th>Branch</th>
+                                        <th>Glorni Indisponibilita</th>
+                                        <th>Allegato</th>
+                                        <th>Note</th>
+                                        <th>User</th>
+                                        <th>Sol.1</th>
+                                        <th>Sol.2</th>
+                                        <th>Sol.3</th>
+                                        <th>Azioni</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Order)
+                                    {
                                         <tr>
-                                            <th>Actions</th>
-                                            <th>Order Code</th>
-                                            <th>#N</th>
-                                            <th>Fornitore</th>
-                                            <th>Data Ordine</th>
-                                            <th>Marca</th>
-                                            <th>Targa</th>
-                                            <th>Telaio</th>
-                                            <th>Codice</th>
-                                            <th>Codice Alternativo</th>
-                                            <th>Descrizione</th>
-                                            <th>Qnt</th>
-                                            <th>Data Consegna Prevists</th>
-                                            <th>Alias</th>
-                                            <th>Cliente</th>
-                                            <th>Branch</th>
-                                            <th>Glorni Indisponibilita</th>
-                                            <th>Allegato</th>
-                                            <th>Note</th>
-                                            <th>User</th>
-                                            <th>Sol.1</th>
-                                            <th>Sol.2</th>
-                                            <th>Sol.3</th>
-                                            <th>Azioni</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.Order)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-rounded btn-secondary btn-icon-text dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="fa fa-list" aria-hidden="true"></i>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-rounded btn-secondary btn-icon-text dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-list" aria-hidden="true"></i>
 
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <a class="dropdown-item" href="@Url.Action("Action", "Order", new { ID = item.IDOrder })">
-                                                                <i class="mdi mdi-pencil"></i> VIEW/EDIT
-                                                            </a>
-                                                            @*<button data-href="@Url.Action("Delete", "Order", new { ID = item.ID })" class="dropdown-item data-btn btn btn-danger btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>*@
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" href="@Url.Action("Action", "Order", new { ID = item.IDOrder })">
+                                                            <i class="mdi mdi-pencil"></i> VIEW/EDIT
+                                                        </a>
+                                                        @*<button data-href="@Url.Action("Delete", "Order", new { ID = item.ID })" class="dropdown-item data-btn btn btn-danger btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>*@
 
-                                                            <a class="data-btn dropdown-item" data-href="@Url.Action("Delete", "Order", new { ID = item.IDOrder })" data-toggle="modal" data-target="#actionModal">
-                                                                <i class="mdi mdi-delete"></i> DELETE
-                                                            </a>
-                                                        </div>
+                                                        <a class="data-btn dropdown-item" data-href="@Url.Action("Delete", "Order", new { ID = item.IDOrder })" data-toggle="modal" data-target="#actionModal">
+                                                            <i class="mdi mdi-delete"></i> DELETE
+                                                        </a>
                                                     </div>
-                                                </td>
-                                                <td>@item.IDOrder</td>
-                                                <td>@item.IDItem</td>
-                                                <td>@item.Supplier</td>
-                                                <td>@item.Date</td>
-                                                <td>@item.Brand</td>
-                                                <td>@item.Plate</td>
-                                                <td>@item.Chassis</td>
-                                                <td>@item.ItemCode</td>
-                                                <td>@item.AlternativeCode</td>
-                                                <td>@item.Description</td>
-                                                <td>@item.Quantity</td>
-                                                <td>@item.DeliveryDate</td>
-                                                <td>@item.Alias</td>
-                                                <td>@item.Customer</td>
-                                                <td>@item.Branch</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>@item.NoteItem</td>
-                                                <td>@item.User</td>
-                                                <td>@item.Reminder1</td>
-                                                <td>@item.Reminder2</td>
-                                                <td>@item.Reminder3</td>
-                                                <td></td>
-                                            </tr>
-                                        }
-                                    </tbody>
+                                                </div>
+                                            </td>
+                                            <td>@item.IDOrder</td>
+                                            <td>@item.IDItem</td>
+                                            <td>@item.Supplier</td>
+                                            <td>@item.Date.ToString("yyyy-MM-dd")</td>
+                                            <td>@item.Brand</td>
+                                            <td>@item.Plate</td>
+                                            <td>@item.Chassis</td>
+                                            <td>@item.ItemCode</td>
+                                            <td>@item.AlternativeCode</td>
+                                            <td>@item.Description</td>
+                                            <td>@item.Quantity</td>
+                                            <td>@(item.DeliveryDate?.ToShortDateString())</td>
+                                            <td>@item.Alias</td>
+                                            <td>@item.Customer</td>
+                                            <td>@item.Branch</td>
+                                            <td>@item.Unavailability</td>
+                                            <td>
+                                                @if (item.Attachment != null)
+                                                {
+                                                    if (item.Attachment.ToString().ToLower() == "true" || item.Attachment.ToString().ToLower() == "on")
+                                                    {
+                                                        <input type="checkbox" class="form-control" checked disabled />
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" class="form-control" disabled />
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <input type="checkbox" class="form-control" disabled />
+                                                }
+                                            </td>
+                                            <td>@item.NoteItem</td>
+                                            <td>@item.User</td>
+                                            <td>@(item.Reminder1?.ToShortDateString())</td>
+                                            <td>@(item.Reminder2?.ToShortDateString())</td>
+                                            <td>@(item.Reminder3?.ToShortDateString())</td>
+                                            <td>
+                                                @if (item.Received.ToString().ToLower() == "off")
+                                                {
+                                                    <span class="badge badge-danger">Annulla</span>
+                                                }
+                                                @if (@item.Unavailability > 7 && @item.Unavailability <= 20)
+                                                {
+                                                    <span class="badge badge-success">Videata</span>
+                                                }
+                                                else if (@item.Unavailability > 20)
+                                                {
+                                                    <span class="badge badge-default">Sollecita</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
 
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
+                            </table>
                         </div>
-                        <!-- /.card -->
-                   
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
                     <!-- /.col -->
                 </div>
                 <!-- /.row -->

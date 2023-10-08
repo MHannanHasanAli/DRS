@@ -21,5 +21,9 @@ namespace DRS.Entities
         public DateTime? Reminder2 { get; set; }
         public DateTime? Reminder3 { get; set; }
         public DateTime? DeliveryDate { get; set; }
+        public int? Unavailability { get; set; }
+        public string Received { get; set; }
+        public string Attachment { get; set; }
+        public string AlternativeCode { get; set; }
     }
 }

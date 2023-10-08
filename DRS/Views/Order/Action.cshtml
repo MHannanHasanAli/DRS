@@ -137,9 +137,94 @@
                         <label for="Note">Note&nbsp;</label>
                         <input value="@Model.Note" type="text" class="form-control" name="Note" id="Note" />
                     </div>
+                    @if (Model.ID != 0)
+                    {<hr />
+                        <br />
+                        <div class="form-group col-md-6">
+                            <label for="AlternativeCode">Codice Alternativo&nbsp;</label>
+                            <input value="@Model.AlternativeCode" type="text" class="form-control" name="Note" id="Note" />
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="DeliveryDate">Data Consegna Prevists&nbsp;</label>
+                            @if (Model.DeliveryDate != null)
+                            {
+                                @Html.TextBox("DeliveryDate", Model.DeliveryDate, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "DeliveryDate", @class = "form-control", type = "date" })
+                            }
+                            else
+                            {
+                                @Html.TextBox("DeliveryDate", DateTime.Now, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "DeliveryDate", @class = "form-control", type = "date" })
+                            }
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Reminder1">Sol 1 &nbsp;</label>
+                            @if (Model.Reminder1 != null)
+                            {@Html.TextBox("Reminder1", Model.Reminder1, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder1", @class = "form-control", type = "date" })
+                        }
+                        else
+                        {
+                            @Html.TextBox("Reminder1", DateTime.Now, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder1", @class = "form-control", type = "date" })
+                            @*<input value="@Model._Date" type="date" class="form-control" name="_Date" id="_Date" placeholder="Enter cost" />*@
+                        }
+                            @*<input value="@Model._ShipByDate" type="date" class="form-control" name="_ShipByDate" id="_ShipByDate" />*@
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Reminder2">Sol 2 &nbsp;</label>
+                            @if (Model.Reminder2 != null)
+                            {@Html.TextBox("Reminder2", Model.Reminder2, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder2", @class = "form-control", type = "date" })
+                        }
+                        else
+                        {
+                            @Html.TextBox("Reminder2", DateTime.Now, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder2", @class = "form-control", type = "date" })
+                            @*<input value="@Model._Date" type="date" class="form-control" name="_Date" id="_Date" placeholder="Enter cost" />*@
+                        }
+                            @*<input value="@Model._ShipByDate" type="date" class="form-control" name="_ShipByDate" id="_ShipByDate" />*@
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="Reminder3">Sol 3 &nbsp;</label>
+                            @if (Model.Reminder3 != null)
+                            {@Html.TextBox("Reminder3", Model.Reminder2, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder3", @class = "form-control", type = "date" })
+                        }
+                        else
+                        {
+                            @Html.TextBox("Reminder3", DateTime.Now, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder3", @class = "form-control", type = "date" })
+                            @*<input value="@Model._Date" type="date" class="form-control" name="_Date" id="_Date" placeholder="Enter cost" />*@
+                        }
+                        </div>
+                        if (@Model.Received == "on")
+                        {
+                            <div class="form-group col-md-3">
+                                <label for="Received">Ricevuto&nbsp;</label>
+                                <input type="checkbox" class="form-control" name="Received" id="Received" checked />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-md-3">
+                                <label for="Received">Ricevuto&nbsp;</label>
+                                <input type="checkbox" class="form-control" name="Received" id="Received" />
+                            </div>
+                        }
+                        if (@Model.Attachment == "on")
+                        {
+                            <div class="form-group col-md-3">
+                                <label for="Attachment">Allegato&nbsp;</label>
+                                <input type="checkbox" class="form-control" name="Attachment" id="Attachment" checked />
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-md-3">
+                                <label for="Attachment">Allegato&nbsp;</label>
+                                <input type="checkbox" class="form-control" name="Attachment" id="Attachment" />
+                            </div>
+                        }
+
+                    }
+
 
 
                 </div>
+               
                 <div class="row">
                     <div class="col-md-12 table-responsive">
                         <table class="table" id="ProductsTable">
@@ -159,35 +244,35 @@
                                         Description
                                     </th>
                                     <th>Note</th>
-                                    <th>Expected Delivery Date</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @*@if (Model._Id != 0)
+                        {
+                            foreach (var item in Model.products)
                             {
-                                foreach (var item in Model.products)
-                                {
-                                    <tr>
-                                        <td>@item._Id</td>
+                                <tr>
+                                    <td>@item._Id</td>
 
-                                        <td>@item._SKU</td>
-                                        <td>@item._Title</td>
-                                        <td>
-                                            @Html.TextBox("_Date", Model._Date, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "_Date", @class = "form-control", type = "date" })
-                                        </td>
-                                        <td>@item._Qty</td>
-                                        <td>£@item._Price</td>
-                                        <td>£@item._Amount</td>
-                                    </tr>
-                                }
-                            }*@
+                                    <td>@item._SKU</td>
+                                    <td>@item._Title</td>
+                                    <td>
+                                        @Html.TextBox("_Date", Model._Date, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "_Date", @class = "form-control", type = "date" })
+                                    </td>
+                                    <td>@item._Qty</td>
+                                    <td>£@item._Price</td>
+                                    <td>£@item._Amount</td>
+                                </tr>
+                            }
+                        }*@
                             </tbody>
                         </table>
                         <hr />
                         @*<h6 id="output">Total : @Model._Quantity</h6>
-                    <h6 id="totalAmount">Total Amount: £@Model._Amount</h6>
-                    <input name="_Quantity" id="_TotalQuantity" type="hidden" />
-                    <input name="_Amount" id="_TotalAmount" type="hidden" />*@
+                <h6 id="totalAmount">Total Amount: £@Model._Amount</h6>
+                <input name="_Quantity" id="_TotalQuantity" type="hidden" />
+                <input name="_Amount" id="_TotalAmount" type="hidden" />*@
                     </div>
                 </div>
 
@@ -300,7 +385,7 @@ if (selectedSupplierID !== 'null') {
             products.push(product);
         });
         var productsJson = JSON.stringify(products);
-
+        debugger
 		$.ajax({
 			url: '@Url.Action("Action", "Order")',
 			type: "post",

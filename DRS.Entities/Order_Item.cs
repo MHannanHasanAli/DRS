@@ -13,7 +13,6 @@ namespace DRS.Entities
         public string Description { get; set; }
         public int Quantity { get; set; }
         public string Note { get; set; }
-        public bool Attachment { get; set; }
-        public string AlternativeCode { get; set; }
+
     }
 }

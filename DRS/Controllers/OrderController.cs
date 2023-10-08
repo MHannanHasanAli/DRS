@@ -62,6 +62,13 @@ namespace DRS.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
+        public static int CalculateDaysBetweenDates(DateTime startDate)
+        {
+            DateTime endDate = DateTime.Now;
+            TimeSpan timeSpan = endDate - startDate;
+            int daysDifference = (int)timeSpan.TotalDays;
+            return daysDifference;
+        }
         // GET: Order
         [HttpPost] // You can use [HttpGet] if appropriate
         public ActionResult GetSuppliersByBrand(int brandID)
@@ -100,8 +107,12 @@ namespace DRS.Controllers
             var OrderItem = new Order_Item();
             foreach (var item in ListOfInventory)
             {
-                
-                if (item.ItemId == "")
+                if (item.ItemId == "" && item.Name == "" && item.ItemId == "" && item.Quantity == "")
+                {
+                    continue;
+                }
+
+                    if (item.ItemId == "")
                 {
                     item.ItemId = "0";
                 }
@@ -148,8 +159,11 @@ namespace DRS.Controllers
                         var Branch = BranchServices.Instance.GetBranchById(order.IDBranch);
                         var Brand = BrandServices.Instance.GetBrandById(order.IDBrand);
                         var user = UserManager.FindById(order.IDUser);
-
-                        var modelfiller = new OrderIndex
+                        if (order.Received == null)
+                        {
+                            order.Received = "off";
+                        }
+                            var modelfiller = new OrderIndex
                         {
                             Supplier = Supplier?.Description,
                             Customer = Customer?.Description,
@@ -171,9 +185,11 @@ namespace DRS.Controllers
                             Description = item.Description,
                             Quantity = item.Quantity,
                             NoteItem = item.Note,
-                            Attachment = item.Attachment,
-                            AlternativeCode = item.AlternativeCode
-                        };
+                            Attachment = order.Attachment,
+                            AlternativeCode = order.AlternativeCode,
+                            Unavailability = CalculateDaysBetweenDates(order.Date),
+                            Received = order.Received
+                    };
 
                         if (model.Order == null)
                         {
@@ -209,7 +225,18 @@ namespace DRS.Controllers
                 model.Chassis = Order.Chassis;
                 model.IDUser = Order.IDUser;
                 model.Date = Order.Date;
-
+                if(model.Date != null)
+                {
+                    model.Unavailability = CalculateDaysBetweenDates(model.Date);
+                }
+                model.Received = Order.Received;
+                model.Attachment = Order.Attachment;
+                model.Reminder1 = Order.Reminder1;
+                model.Reminder2 = Order.Reminder2;
+                model.Reminder3 = Order.Reminder3;
+                model.DeliveryDate = Order.DeliveryDate;
+                model.Received = Order.Received;
+                model.Attachment = Order.Attachment;
             }
             model.Branches = BranchServices.Instance.GetBranchs();
             model.Customers = CustomerServices.Instance.GetCustomers();
@@ -234,13 +261,15 @@ namespace DRS.Controllers
                 Order.Note = model.Note;
                 Order.Plate = model.Plate;
                 Order.Chassis = model.Chassis;
-                Order.IDUser = user.Name;
+                //Order.IDUser = user.Name;
                 Order.Date = DateTime.Now;
                 Order.DeliveryDate = model.DeliveryDate;
                 Order.Reminder1 = model.Reminder1;
                 Order.Reminder2 = model.Reminder2;
                 Order.Reminder3 = model.Reminder3;
-
+                Order.Attachment = model.Attachment;
+                Order.Received = model.Received;
+                Order.AlternativeCode = model.AlternativeCode;
                 OrderServices.Instance.UpdateOrder(Order);
 
             }
@@ -256,8 +285,6 @@ namespace DRS.Controllers
                 Order.Chassis = model.Chassis;
                 //Order.IDUser = user.Name;
                 Order.Date = DateTime.Now;
-                //Order.DeliveryDate = model.DeliveryDate;
-
                 OrderServices.Instance.CreateOrder(Order);
 
             }
@@ -282,7 +309,12 @@ namespace DRS.Controllers
         {
             if (model.ID != 0)
             {
-                var Order = OrderServices.Instance.GetOrderById(model.ID);
+                var products = Order_ItemServices.Instance.GetOrder_Items().Where(x => x.IDOrder == model.ID);
+                foreach (var item in products)
+                {
+                    Order_ItemServices.Instance.DeleteOrder_Item(item.ID);
+                }
+                    var Order = OrderServices.Instance.GetOrderById(model.ID);
 
                 OrderServices.Instance.DeleteOrder(Order.ID);
             }
