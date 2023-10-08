@@ -16,5 +16,10 @@ namespace DRS.Entities
         public string Plate { get; set; }
         public string Chassis { get; set; }
         public string Note { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime? Reminder1 { get; set; }
+        public DateTime? Reminder2 { get; set; }
+        public DateTime? Reminder3 { get; set; }
+        public DateTime? DeliveryDate { get; set; }
     }
 }

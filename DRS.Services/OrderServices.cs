@@ -55,10 +55,10 @@ namespace DRS.Services
         {
             using (var context = new DSContext())
             {
-                var lastAdjustment = context.orders.OrderByDescending(a => a._Id).FirstOrDefault();
+                var lastAdjustment = context.orders.OrderByDescending(a => a.ID).FirstOrDefault();
                 if (lastAdjustment != null)
                 {
-                    return lastAdjustment._Id;
+                    return lastAdjustment.ID;
                 }
                 // Return a default value (e.g., -1) or throw an exception if there are no entries.
                 // You can decide the appropriate behavior based on your application requirements.

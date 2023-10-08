@@ -117,6 +117,7 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="IDSupplier">Supplier:</label>
@@ -158,6 +159,7 @@
                                         Description
                                     </th>
                                     <th>Note</th>
+                                    <th>Expected Delivery Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -218,6 +220,39 @@
 
 <script>
     $(document).ready(function () {
+        debugger
+        var selectedSupplierID = '@Model.IDSupplier'; // Convert the Model.IDSupplier to a string
+
+if (selectedSupplierID !== 'null') {
+    $('#IDSupplier').val(selectedSupplierID);
+}
+        var selectedBrandID = $('#IDBrand').val(); // Get the selected Brand ID
+        if (selectedBrandID !== "") {
+            // Make an AJAX request to the server to fetch suppliers by brand
+            $.ajax({
+                url: '/Order/GetSuppliersByBrand', // Replace with the actual URL to your controller action
+                type: 'POST', // or 'GET' depending on your server-side implementation
+                data: { brandID: selectedBrandID }, // Send the selected Brand ID as a parameter
+                success: function (data) {
+                    // Clear and populate the IDSupplier dropdown with the received data
+                    var IDSupplierDropdown = $('#IDSupplier');
+                    IDSupplierDropdown.empty();
+
+                    // Iterate through the received data and populate the dropdown
+                    $.each(data, function (index, supplier) {
+                        IDSupplierDropdown.append($('<option></option>').attr('value', supplier.ID).text(supplier.Description));
+                    });
+                     var selectedSupplierID = '@Model.IDSupplier'; // Convert the Model.IDSupplier to a string
+
+if (selectedSupplierID !== 'null') {
+    $('#IDSupplier').val(selectedSupplierID);
+}
+                },
+                error: function () {
+                    // Handle errors, if any
+                }
+            });
+        }
         appendProductToTable();
         // Handle the change event of the IDBrand dropdown
         $('#IDBrand').change(function () {
@@ -253,11 +288,13 @@
         showLoadingSpinner();
         var products = [];
         $('#ProductsTable tbody tr').each(function () {
+            debugger
             var product = {
-                ItemId: $(this).find('td:eq(1)').val(),
+                ItemId: $(this).find('td:eq(1) input').val(),
                 Quantity: $(this).find('td:eq(2) input').val(),
                 Name: $(this).find('td:eq(3) input').val(),
                 Note: $(this).find('td:eq(4) input').val(),
+                Date: $(this).find('td:eq(5) input').val(),
             };
 
             products.push(product);
@@ -320,7 +357,13 @@
         $('#ProductsTable tbody').append(row);
         productCounter++; // Increment the product counter for the next row
     }
-
+    function getCurrentDate() {
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0'); // Month is zero-based, so add 1 and pad with 0 if necessary
+        var day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
     // Attach a click event handler to remove rows and update serial numbers
     $('#ProductsTable tbody').on('click', '.remove-row', function () {
         $(this).closest('tr').remove(); // Remove the current row

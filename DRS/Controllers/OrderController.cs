@@ -100,25 +100,30 @@ namespace DRS.Controllers
             var OrderItem = new Order_Item();
             foreach (var item in ListOfInventory)
             {
-                if (item.Quantity == null)
-                {
-                    item.Quantity = "0";
-                }
-                if (item.ItemId == null)
+                
+                if (item.ItemId == "")
                 {
                     item.ItemId = "0";
                 }
-                if (item.Name == null)
+                if (item.Name == "")
                 {
                     item.Name = "No Name";
                 }
 
                 OrderItem.IDOrder = Orderid;
+                OrderItem.ItemCode = item.ItemId;
                 OrderItem.Note = item.Note;
                 OrderItem.Description = item.Name;
-                OrderItem.Quantity = int.Parse(item.Quantity);
-                OrderItem.DateOrder = DateTime.Now;
-            
+                if(item.Quantity == "")
+                {
+                    OrderItem.Quantity = 0;
+                }
+                else
+                {
+                    OrderItem.Quantity = int.Parse(item.Quantity);
+
+                }
+
 
                 Order_ItemServices.Instance.CreateOrder_Item(OrderItem);
 
@@ -128,9 +133,62 @@ namespace DRS.Controllers
         public ActionResult Index(string SearchTerm = "")
         {
             OrderListingViewModel model = new OrderListingViewModel();
-            model.Orders = OrderServices.Instance.GetOrders();
+
+            var AllOrders = OrderServices.Instance.GetOrders();
+            var AllItems = Order_ItemServices.Instance.GetOrder_Items();
+
+            foreach (var order in AllOrders)
+            {
+                foreach (var item in AllItems)
+                {
+                    if (order.ID == item.IDOrder)
+                    {
+                        var Supplier = SupplierServices.Instance.GetSupplierById(order.IDSupplier);
+                        var Customer = CustomerServices.Instance.GetCustomerById(order.IDCustomer);
+                        var Branch = BranchServices.Instance.GetBranchById(order.IDBranch);
+                        var Brand = BrandServices.Instance.GetBrandById(order.IDBrand);
+                        var user = UserManager.FindById(order.IDUser);
+
+                        var modelfiller = new OrderIndex
+                        {
+                            Supplier = Supplier?.Description,
+                            Customer = Customer?.Description,
+                            Alias = Customer?.Alias,
+                            Branch = Branch?.Description,
+                            Brand = Brand?.Description,
+                            // User = user?.Name, // Uncomment this line when needed
+                            Chassis = order.Chassis,
+                            Plate = order.Plate,
+                            Note = order.Note,
+                            Date = order.Date,
+                            DeliveryDate = order.DeliveryDate,
+                            Reminder1 = order.Reminder1,
+                            Reminder2 = order.Reminder2,
+                            Reminder3 = order.Reminder3,
+                            IDOrder = order.ID,
+                            IDItem = item.ID,
+                            ItemCode = item.ItemCode,
+                            Description = item.Description,
+                            Quantity = item.Quantity,
+                            NoteItem = item.Note,
+                            Attachment = item.Attachment,
+                            AlternativeCode = item.AlternativeCode
+                        };
+
+                        if (model.Order == null)
+                        {
+                            model.Order = new List<OrderIndex>();
+                        }
+
+                        model.Order.Add(modelfiller);
+                    }
+                }
+            }
+
             return View("Index", model);
         }
+
+
 
 
         [HttpGet]
@@ -141,7 +199,7 @@ namespace DRS.Controllers
             if (ID != 0)
             {
                 var Order = OrderServices.Instance.GetOrderById(ID);
-                model.ID = Order.ID;
+                model.ID = Order.ID;              
                 model.IDBranch = Order.IDBranch;
                 model.IDCustomer = Order.IDCustomer;
                 model.IDBrand = Order.IDBrand;
@@ -150,6 +208,7 @@ namespace DRS.Controllers
                 model.Plate = Order.Plate;
                 model.Chassis = Order.Chassis;
                 model.IDUser = Order.IDUser;
+                model.Date = Order.Date;
 
             }
             model.Branches = BranchServices.Instance.GetBranchs();
@@ -176,6 +235,11 @@ namespace DRS.Controllers
                 Order.Plate = model.Plate;
                 Order.Chassis = model.Chassis;
                 Order.IDUser = user.Name;
+                Order.Date = DateTime.Now;
+                Order.DeliveryDate = model.DeliveryDate;
+                Order.Reminder1 = model.Reminder1;
+                Order.Reminder2 = model.Reminder2;
+                Order.Reminder3 = model.Reminder3;
 
                 OrderServices.Instance.UpdateOrder(Order);
 
@@ -190,7 +254,10 @@ namespace DRS.Controllers
                 Order.Note = model.Note;
                 Order.Plate = model.Plate;
                 Order.Chassis = model.Chassis;
-                Order.IDUser = user.Name;
+                //Order.IDUser = user.Name;
+                Order.Date = DateTime.Now;
+                //Order.DeliveryDate = model.DeliveryDate;
+
                 OrderServices.Instance.CreateOrder(Order);
 
             }

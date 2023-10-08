@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-    @if (Model.Orders != null)
+    @if (Model.Order != null)
     {
         <section class="content">
             <div class="container-fluid">
@@ -59,7 +59,7 @@
                         <div class="card col-md-12">
 
                             <!-- /.card-header -->
-                            <div class="card-body">
+                            <div class="card-body" style="overflow-x: auto;">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
@@ -90,7 +90,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model.Orders)
+                                        @foreach (var item in Model.Order)
                                         {
                                             <tr>
                                                 <td>
@@ -100,30 +100,40 @@
 
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <a class="dropdown-item" href="@Url.Action("Action", "Order", new { ID = item.ID })">
+                                                            <a class="dropdown-item" href="@Url.Action("Action", "Order", new { ID = item.IDOrder })">
                                                                 <i class="mdi mdi-pencil"></i> VIEW/EDIT
                                                             </a>
                                                             @*<button data-href="@Url.Action("Delete", "Order", new { ID = item.ID })" class="dropdown-item data-btn btn btn-danger btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>*@
 
-                                                            <a class="data-btn dropdown-item" data-href="@Url.Action("Delete", "Order", new { ID = item.ID })" data-toggle="modal" data-target="#actionModal">
+                                                            <a class="data-btn dropdown-item" data-href="@Url.Action("Delete", "Order", new { ID = item.IDOrder })" data-toggle="modal" data-target="#actionModal">
                                                                 <i class="mdi mdi-delete"></i> DELETE
                                                             </a>
                                                         </div>
                                                     </div>
                                                 </td>
+                                                <td>@item.IDOrder</td>
+                                                <td>@item.IDItem</td>
+                                                <td>@item.Supplier</td>
+                                                <td>@item.Date</td>
+                                                <td>@item.Brand</td>
+                                                <td>@item.Plate</td>
+                                                <td>@item.Chassis</td>
+                                                <td>@item.ItemCode</td>
+                                                <td>@item.AlternativeCode</td>
                                                 <td>@item.Description</td>
-                                                <td>@item.Description</td>
+                                                <td>@item.Quantity</td>
+                                                <td>@item.DeliveryDate</td>
                                                 <td>@item.Alias</td>
-                                                <td>@item.Telephone</td>
-                                                <td>@item.Whatsapp</td>
-                                                <td>@item.Email</td>
-                                                <td>@item.Note</td>
-                                                @*<td>@item._File</td>*@
-                                                @*<td>
-            <a class="btn" href="@Url.Action("DownloadFile", "Shared", new { path = item._File })">
-                <i class="fa fa-download" aria-hidden="true"></i>
-            </a>
-        </td>*@
+                                                <td>@item.Customer</td>
+                                                <td>@item.Branch</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>@item.NoteItem</td>
+                                                <td>@item.User</td>
+                                                <td>@item.Reminder1</td>
+                                                <td>@item.Reminder2</td>
+                                                <td>@item.Reminder3</td>
+                                                <td></td>
                                             </tr>
                                         }
                                     </tbody>
