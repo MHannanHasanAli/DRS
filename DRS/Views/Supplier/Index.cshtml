@@ -3,6 +3,10 @@
 @{
 }
 <style>
+    .blue {
+        background: #3947e7;
+        color: white;
+    }
     .addbtn {
         border-radius: 50%;
         padding: 10px;
@@ -42,7 +46,7 @@
                     <div class="input-group">
 
                         @Html.ValidationSummary("", new { @class = "text-danger" })
-                        <a href="@Url.Action("Action", "Supplier")" class=" btn btn-primary"><i class="fas fa-plus"></i>&nbsp; Add Supplier</a>
+                        <a href="@Url.Action("Action", "Supplier")" class=" btn btn-rounded blue"><i class="fas fa-user-plus"></i>&nbsp; Aggiungi</a>
 
                     </div>
                 </form>

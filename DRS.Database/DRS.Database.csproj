@@ -109,6 +109,10 @@
     <Compile Include="Migrations\202310090717001_Bulma.designer.cs">
       <DependentUpon>202310090717001_Bulma.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310091116227_Picolo.cs" />
+    <Compile Include="Migrations\202310091116227_Picolo.designer.cs">
+      <DependentUpon>202310091116227_Picolo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DSContext.cs" />
@@ -162,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202310090717001_Bulma.resx">
       <DependentUpon>202310090717001_Bulma.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310091116227_Picolo.resx">
+      <DependentUpon>202310091116227_Picolo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

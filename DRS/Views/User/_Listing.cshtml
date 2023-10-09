@@ -18,10 +18,10 @@
                                     Name
                                 </th>
                                 <th>
-                                    Email
+                                    Surname
                                 </th>
                                 <th>
-                                    Contact
+                                    Branch
                                 </th>
                               
                                 <th>
@@ -34,8 +34,8 @@
                             {
                                 <tr>
                                     <td>@item.Name</td>
-                                    <td>@item.Email</td>
-                                    <td>@item.PhoneNumber</td>
+                                    <td>@item.Surname</td>
+                                    <td>@item.Branch</td>
                                     <td>
                                         <button data-href="@Url.Action("Action", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-info btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-pencil"></i> EDIT</button>
                                         <button data-href="@Url.Action("Delete", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-danger btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>

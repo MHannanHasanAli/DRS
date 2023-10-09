@@ -186,7 +186,7 @@ namespace DRS.Controllers
             if (ModelState.IsValid)
             {
                 var role = await RolesManager.FindByIdAsync(model.RoleID);
-                var user = new User { UserName = model.Email, Email = model.Email, PhoneNumber = model.Contact, Name = model.Name, Role = role.Name, Password = model.Password };
+                var user = new User { Branch = model.Branch, Surname = model.Surname, Name = model.Name, Role = role.Name, Password = model.Password };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -201,13 +201,13 @@ namespace DRS.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
 
-                    return RedirectToAction("", "");
+                    return RedirectToAction("Index", "User");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("", "");
+            return RedirectToAction("Index", "User");
         }
 
         //
