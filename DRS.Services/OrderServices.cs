@@ -51,18 +51,18 @@ namespace DRS.Services
                 return data;
             }
         }
-        public int GetLastOrderId()
+        public Order GetLastOrderId()
         {
             using (var context = new DSContext())
             {
                 var lastAdjustment = context.orders.OrderByDescending(a => a.ID).FirstOrDefault();
-                if (lastAdjustment != null)
-                {
-                    return lastAdjustment.ID;
-                }
+                
+                
+                    return lastAdjustment;
+               
                 // Return a default value (e.g., -1) or throw an exception if there are no entries.
                 // You can decide the appropriate behavior based on your application requirements.
-                return -1; // Default value when there are no entries.
+                 // Default value when there are no entries.
             }
         }
         public Order GetOrderInOrders(int Sentid)

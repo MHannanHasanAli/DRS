@@ -65,7 +65,10 @@ namespace DRS.ViewModels
         public string AlternativeCode { get; set; }
         public string Received { get; set; }
         public string Attachment { get; set; }
-
+        public int IDItem { get; set; }
+        public string Description { get; set; }
+        public int Quantity { get; set; }
+        public string NoteItem { get; set; }
     }
 
     public class OrderProductModel

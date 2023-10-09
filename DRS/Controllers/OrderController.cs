@@ -1,6 +1,7 @@
 ﻿using DRS.Entities;
 using DRS.Services;
 using DRS.ViewModels;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
@@ -99,10 +100,18 @@ namespace DRS.Controllers
             // Return the supplier data as JSON
             return Json(supplierList, JsonRequestBehavior.AllowGet);
         }
+
+        static int checker = 0;
         public ActionResult ActionProducts(string products)
         {
+            if(checker == 1)
+            {
+                checker = 0;
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
 
-            var Orderid = OrderServices.Instance.GetLastOrderId();
+            var LastOrder = OrderServices.Instance.GetLastOrderId();
+            int flag = 0;
             var ListOfInventory = JsonConvert.DeserializeObject<List<OrderProductModel>>(products);
             var OrderItem = new Order_Item();
             foreach (var item in ListOfInventory)
@@ -120,23 +129,64 @@ namespace DRS.Controllers
                 {
                     item.Name = "No Name";
                 }
-
-                OrderItem.IDOrder = Orderid;
-                OrderItem.ItemCode = item.ItemId;
-                OrderItem.Note = item.Note;
-                OrderItem.Description = item.Name;
-                if(item.Quantity == "")
+                if (flag == 0)
                 {
-                    OrderItem.Quantity = 0;
+                    OrderItem.IDOrder = LastOrder.ID;
+                    OrderItem.ItemCode = item.ItemId;
+                    OrderItem.Note = item.Note;
+                    OrderItem.Description = item.Name;
+                    if (item.Quantity == "")
+                    {
+                        OrderItem.Quantity = 0;
+                    }
+                    else
+                    {
+                        OrderItem.Quantity = int.Parse(item.Quantity);
+
+                    }
+
+
+                    Order_ItemServices.Instance.CreateOrder_Item(OrderItem);
+                    flag = 1;
                 }
                 else
                 {
-                    OrderItem.Quantity = int.Parse(item.Quantity);
+                    var Order = new Entities.Order();
+                    Order.IDBranch = LastOrder.IDBranch;
+                    Order.IDCustomer = LastOrder.IDCustomer;
+                    Order.IDBrand = LastOrder.IDBrand;
+                    Order.IDSupplier = LastOrder.IDSupplier;
+                    Order.Note = LastOrder.Note;
+                    Order.Plate = LastOrder.Plate;
+                    Order.Chassis = LastOrder.Chassis;
+                    //Order.IDUser = user.Name;
+                    Order.Date = DateTime.Now;
+                    OrderServices.Instance.CreateOrder(Order);
 
+                    var ModifiedOrder = OrderServices.Instance.GetLastOrderId();
+
+
+                    OrderItem.IDOrder = ModifiedOrder.ID;
+                    OrderItem.ItemCode = item.ItemId;
+                    OrderItem.Note = item.Note;
+                    OrderItem.Description = item.Name;
+                    if (item.Quantity == "")
+                    {
+                        OrderItem.Quantity = 0;
+                    }
+                    else
+                    {
+                        OrderItem.Quantity = int.Parse(item.Quantity);
+
+                    }
+
+
+                    Order_ItemServices.Instance.CreateOrder_Item(OrderItem);
+                    flag = 1;
                 }
+               
 
-
-                Order_ItemServices.Instance.CreateOrder_Item(OrderItem);
+               
 
             }
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
@@ -204,9 +254,6 @@ namespace DRS.Controllers
             return View("Index", model);
         }
 
-
-
-
         [HttpGet]
         public ActionResult Action(int ID = 0)
         {
@@ -215,6 +262,8 @@ namespace DRS.Controllers
             if (ID != 0)
             {
                 var Order = OrderServices.Instance.GetOrderById(ID);
+                var OrderItem = Order_ItemServices.Instance.GetOrder_Items().Where(x => x.IDOrder == Order.ID);
+
                 model.ID = Order.ID;              
                 model.IDBranch = Order.IDBranch;
                 model.IDCustomer = Order.IDCustomer;
@@ -237,6 +286,14 @@ namespace DRS.Controllers
                 model.DeliveryDate = Order.DeliveryDate;
                 model.Received = Order.Received;
                 model.Attachment = Order.Attachment;
+                foreach (var item in OrderItem)
+                {
+                    model.ItemCode = item.ItemCode;
+                    model.Description = item.Description;
+                    model.Quantity = item.Quantity;
+                    model.NoteItem = item.Note;
+                }
+               
             }
             model.Branches = BranchServices.Instance.GetBranchs();
             model.Customers = CustomerServices.Instance.GetCustomers();
@@ -253,6 +310,7 @@ namespace DRS.Controllers
             if (model.ID != 0)
             {
                 var Order = OrderServices.Instance.GetOrderById(model.ID);
+               
                 Order.ID = model.ID;
                 Order.IDBranch = model.IDBranch;
                 Order.IDCustomer = model.IDCustomer;
@@ -270,6 +328,7 @@ namespace DRS.Controllers
                 Order.Attachment = model.Attachment;
                 Order.Received = model.Received;
                 Order.AlternativeCode = model.AlternativeCode;
+                checker = 1;
                 OrderServices.Instance.UpdateOrder(Order);
 
             }
@@ -283,7 +342,7 @@ namespace DRS.Controllers
                 Order.Note = model.Note;
                 Order.Plate = model.Plate;
                 Order.Chassis = model.Chassis;
-                //Order.IDUser = user.Name;
+                //Order.IDUser = user.Name;               
                 Order.Date = DateTime.Now;
                 OrderServices.Instance.CreateOrder(Order);
 

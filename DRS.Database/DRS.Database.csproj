@@ -105,6 +105,10 @@
     <Compile Include="Migrations\202310081000196_Buu.designer.cs">
       <DependentUpon>202310081000196_Buu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310090717001_Bulma.cs" />
+    <Compile Include="Migrations\202310090717001_Bulma.designer.cs">
+      <DependentUpon>202310090717001_Bulma.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DSContext.cs" />
@@ -155,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202310081000196_Buu.resx">
       <DependentUpon>202310081000196_Buu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310090717001_Bulma.resx">
+      <DependentUpon>202310090717001_Bulma.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

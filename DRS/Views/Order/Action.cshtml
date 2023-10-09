@@ -224,61 +224,73 @@
 
 
                 </div>
-               
+
                 <div class="row">
                     <div class="col-md-12 table-responsive">
                         <table class="table" id="ProductsTable">
                             <thead>
                                 <tr>
-                                    <th>
-                                        S.No
-                                    </th>
+                                    @if (Model.ID != 0)
+                                    {
 
-                                    <th>
-                                        Order Code
-                                    </th>
-                                    <th>
-                                        Quantita
-                                    </th>
-                                    <th>
-                                        Description
-                                    </th>
-                                    <th>Note</th>
+                                        <th>
+                                            Order Code
+                                        </th>
+                                        <th>
+                                            Quantita
+                                        </th>
+                                        <th>
+                                            Description
+                                        </th>
+                                        <th>Note</th>
+
+                                    }
+                                    else
+                                    {
+                                        <th>
+                                            S.No
+                                        </th>
+
+                                        <th>
+                                            Order Code
+                                        </th>
+                                        <th>
+                                            Quantita
+                                        </th>
+                                        <th>
+                                            Description
+                                        </th>
+                                        <th>Note</th>
+                                    }
+
 
                                 </tr>
                             </thead>
                             <tbody>
-                                @*@if (Model._Id != 0)
-                        {
-                            foreach (var item in Model.products)
-                            {
-                                <tr>
-                                    <td>@item._Id</td>
-
-                                    <td>@item._SKU</td>
-                                    <td>@item._Title</td>
-                                    <td>
-                                        @Html.TextBox("_Date", Model._Date, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "_Date", @class = "form-control", type = "date" })
-                                    </td>
-                                    <td>@item._Qty</td>
-                                    <td>£@item._Price</td>
-                                    <td>£@item._Amount</td>
-                                </tr>
-                            }
-                        }*@
+                                @if (Model.ID != 0)
+                                {
+                                    <tr>
+                                        <td>@Model.ItemCode</td>
+                                        <td>@Model.Quantity</td>
+                                        <td>@Model.Description</td>
+                                        <td>@Model.NoteItem</td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                         <hr />
-                        @*<h6 id="output">Total : @Model._Quantity</h6>
-                <h6 id="totalAmount">Total Amount: £@Model._Amount</h6>
-                <input name="_Quantity" id="_TotalQuantity" type="hidden" />
-                <input name="_Amount" id="_TotalAmount" type="hidden" />*@
+
                     </div>
                 </div>
 
             </form>
-            <button id="AddItemButton" type="button" class="btn btn-primary">Add Item</button>
-
+            @if (Model.ID != 0)
+            {
+            }
+            else
+            {
+                <button id="AddItemButton" type="button" class="btn btn-primary">Add Item</button>
+            }
 
 
             <div class="errorDiv">
@@ -307,7 +319,7 @@
     $(document).ready(function () {
         debugger
         var selectedSupplierID = '@Model.IDSupplier'; // Convert the Model.IDSupplier to a string
-
+        var editoption = '@Model.ID';
 if (selectedSupplierID !== 'null') {
     $('#IDSupplier').val(selectedSupplierID);
 }

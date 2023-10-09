@@ -88,6 +88,18 @@ namespace DRS.Models
         [Required]
         public string Name { get; set; }
 
+        [Display(Name = "Surname")]
+        [Required]
+        public string Surname { get; set; }
+
+        [Display(Name = "Branch")]
+        [Required]
+        public string Branch { get; set; }
+
+        [Display(Name = "Image")]
+        [Required]
+        public string Image { get; set; }
+
         [Display(Name = "Contact")]
         [Required]
         [DataType(DataType.PhoneNumber)]

@@ -100,8 +100,10 @@ namespace DRS.Controllers
                 var user = await UserManager.FindByIdAsync(ID);
                 model.ID = user.Id;
                 model.Name = user.Name;
-                model.Contact = user.PhoneNumber;
-                model.Email = user.Email;
+                //model.Contact = user.PhoneNumber;
+                //model.Email = user.Email;
+                model.Surname = user.Surname;
+                model.Branch = user.Branch;
 
                 model.Role = user.Role;
                 model.Password = user.Password;
@@ -122,8 +124,10 @@ namespace DRS.Controllers
 
                 user.Id = model.ID;
                 user.Name = model.Name;
-                user.PhoneNumber = model.Contact;
-                user.Email = model.Email;
+                user.Surname = model.Surname;
+                user.Branch = model.Branch;
+                //user.PhoneNumber = model.Contact;
+                //user.Email = model.Email;
                 user.Role = model.Role;
                 var token = await UserManager.GeneratePasswordResetTokenAsync(model.ID);
                 var result2 = await UserManager.ResetPasswordAsync(model.ID, token, model.Password);
@@ -134,11 +138,13 @@ namespace DRS.Controllers
             {
                 var User = new User();
                 User.Name = model.Name;
-                User.PhoneNumber = model.Contact;
-                User.Email = model.Email;
+                User.Surname = model.Surname;
+                User.Branch = model.Branch;
+                //User.PhoneNumber = model.Contact;
+                //User.Email = model.Email;
                 User.Password = model.Password;
                 User.Role = model.Role;
-                User.UserName = model.Email;
+                //User.UserName = model.Email;
                 result = await UserManager.CreateAsync(User);
 
             }
@@ -212,8 +218,10 @@ namespace DRS.Controllers
 
                 user.Id = model.ID;
                 user.Name = model.Name;
-                user.PhoneNumber = model.Contact;
-                user.Email = model.Email;
+                user.Surname = model.Surname;
+                user.Branch = model.Branch;
+                //user.PhoneNumber = model.Contact;
+                //user.Email = model.Email;
                 user.Password = model.Password;
                 user.Role = model.Role;
                 result = await UserManager.UpdateAsync(user);
@@ -223,10 +231,12 @@ namespace DRS.Controllers
             {
                 var User = new User();
                 User.Name = model.Name;
-                User.PhoneNumber = model.Contact;
-                User.Email = model.Email;
+                User.Surname = model.Surname;
+                User.Branch = model.Branch;
+                //User.PhoneNumber = model.Contact;
+                //User.Email = model.Email;
                 User.Password = model.Password;
-                User.UserName = model.Email;
+                //User.UserName = model.Email;
                 User.Role = model.Role;
                 result = await UserManager.CreateAsync(User);
 

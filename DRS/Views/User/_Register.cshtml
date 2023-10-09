@@ -27,28 +27,44 @@
         {
             @Html.AntiForgeryToken()
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Full Name</label>
-                        <div class="col-sm-9">
-                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Email</label>
-                        <div class="col-sm-9">
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Name</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
                     </div>
                 </div>
             </div>
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Surname</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Surname, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Branch</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Branch, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>*@
+        </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Role</label>
+                        <label class="col-sm-3 col-form-label">Profile</label>
                         <div class="col-sm-9">
                             <select name="RoleID" class="form-control">
                                 @foreach (var item in Model.Roles)
@@ -80,7 +96,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            @*<div class="row">
                 <div class="col-md-12">
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Contact</label>
@@ -91,7 +107,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div>*@
 
             <input type="submit" style="color:white;" class="btn btn-rounded btn-block btn-inverse-dark btn-fw" value="Register" />
 
