@@ -17,6 +17,8 @@ namespace DRS.Controllers
         // GET: Supplier_Brand
         public ActionResult Index(string SearchTerm = "")
         {
+            Session["ACTIVER"] = "Supplier/Brand";
+
             Supplier_BrandListingViewModel model = new Supplier_BrandListingViewModel();
             var datalist = new List<DisplayModelForRelation>();
             
@@ -41,6 +43,8 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Import()
         {
+            Session["ACTIVER"] = "Supplier/Brand Import";
+
             return View();
         }
         [HttpPost]
@@ -224,7 +228,15 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Action(int ID = 0)
         {
+            if (ID != 0)
+            {
+                Session["ACTIVER"] = "Supplier/Brand Edit";
+            }
+            else
+            {
+                Session["ACTIVER"] = "Add Supplier/Brand";
 
+            }
             Supplier_BrandActionViewModel model = new Supplier_BrandActionViewModel();
             if (ID != 0)
             {

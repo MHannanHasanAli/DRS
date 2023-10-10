@@ -16,6 +16,8 @@ namespace DRS.Controllers
         // GET: Branch
         public ActionResult Index(string SearchTerm = "")
         {
+            Session["ACTIVER"] = "Branch";
+
             BranchListingViewModel model = new BranchListingViewModel();
             model.Branches = BranchServices.Instance.GetBranchs();
             return View("Index", model);
@@ -23,6 +25,8 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Import()
         {
+            Session["ACTIVER"] = "Branch Import";
+
             return View();
         }
         public ActionResult ExportToExcel()
@@ -188,7 +192,15 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Action(int ID = 0)
         {
+            if (ID != 0)
+            {
+                Session["ACTIVER"] = "Branch Edit";
+            }
+            else
+            {
+                Session["ACTIVER"] = "Add Branch";
 
+            }
             BranchActionViewModel model = new BranchActionViewModel();
             if (ID != 0)
             {

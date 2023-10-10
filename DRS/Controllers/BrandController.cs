@@ -16,6 +16,8 @@ namespace DRS.Controllers
         // GET: Brand
         public ActionResult Index(string SearchTerm = "")
         {
+            Session["ACTIVER"] = "Brand";
+
             BrandListingViewModel model = new BrandListingViewModel();
             model.Brands = BrandServices.Instance.GetBrands();
             return View("Index", model);
@@ -24,12 +26,22 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Import()
         {
+            Session["ACTIVER"] = "Brand Import";
+
             return View();
         }
         [HttpGet]
         public ActionResult Action(int ID = 0)
         {
+            if (ID != 0)
+            {
+                Session["ACTIVER"] = "Brand Edit";
+            }
+            else
+            {
+                Session["ACTIVER"] = "Add Brand";
 
+            }
             BrandActionViewModel model = new BrandActionViewModel();
             if (ID != 0)
             {

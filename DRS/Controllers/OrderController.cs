@@ -78,6 +78,7 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Import()
         {
+            Session["ACTIVER"] = "Order Import";
             return View();
         }
         // GET: Order
@@ -204,6 +205,7 @@ namespace DRS.Controllers
         }
         public ActionResult Index(string SearchTerm = "")
         {
+            Session["ACTIVER"] = "Order";
             OrderListingViewModel model = new OrderListingViewModel();
 
             var AllOrders = OrderServices.Instance.GetOrders();
@@ -268,7 +270,14 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Action(int ID = 0)
         {
-
+            if (ID != 0)
+            {
+                Session["ACTIVER"] = "Order Edit";
+            }
+            else
+            {
+                Session["ACTIVER"] = "Add Order";
+            }
             OrderActionViewModel model = new OrderActionViewModel();
             if (ID != 0)
             {

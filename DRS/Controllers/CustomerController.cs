@@ -17,6 +17,7 @@ namespace DRS.Controllers
         // GET: Customer
         public ActionResult Index(string SearchTerm = "")
         {
+            Session["ACTIVER"] = "Customer";
             CustomerListingViewModel model = new CustomerListingViewModel();
             model.Customers = CustomerServices.Instance.GetCustomers();
             return View("Index", model);
@@ -24,12 +25,23 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Import()
         {
+            Session["ACTIVER"] = "Customer Import";
+
             return View();
         }
 
         [HttpGet]
         public ActionResult Action(int ID = 0)
         {
+            if (ID != 0)
+            {
+                Session["ACTIVER"] = "Customer Edit";
+            }
+            else
+            {
+                Session["ACTIVER"] = "Add Customer";
+
+            }
 
             CustomerActionViewModel model = new CustomerActionViewModel();
             if (ID != 0)

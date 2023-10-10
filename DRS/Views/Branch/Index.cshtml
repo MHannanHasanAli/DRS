@@ -34,6 +34,7 @@
     .top-portion {
         width: 100%;
         display: flex;
+        justify-content: space-between;
     }
 
     #searchdropdown {
@@ -44,9 +45,7 @@
 <div class="container">
     <div class="card">
         <div class="card-body  container-top">
-            <div>
-                <h2>Branch </h2>
-            </div>
+           
             <div class="top-portion">
                 <div class="input-group-prepend flexer">
                     <span class="input-group-text"><i class="fa fa-search"></i></span>
@@ -105,7 +104,7 @@
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                             <a class="dropdown-item" href="@Url.Action("Action", "Branch", new { ID = item.ID })">
-                                                                <i class="mdi mdi-pencil"></i> VIEW/EDIT
+                                                                <i class="mdi mdi-pencil"></i> Modifica
                                                             </a>
                                                             @*<button data-href="@Url.Action("Delete", "Branch", new { ID = item.ID })" class="dropdown-item data-btn btn btn-danger btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>*@
 

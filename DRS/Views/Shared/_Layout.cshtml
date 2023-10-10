@@ -80,19 +80,15 @@
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div style="background-color:dodgerblue;" class="navbar-brand-wrapper d-flex justify-content-center">
                 <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
-
-
-
-
-
-
-                    <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+              <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                         <span class="typcn typcn-th-menu"></span>
                     </button>
+                    <img src="~/Content/Logo/logo.png" width="150px" height="50px" />
                 </div>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
 
+                <h1 id="Main-title">Loading...</h1>
                 <ul class="navbar-nav navbar-nav-right">
                 </ul>
                 <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
@@ -225,6 +221,82 @@
     <script src="~/Content/template/js/settings.js"></script>
     <script src="~/Content/template/js/todolist.js"></script>
     <script>
+        $(document).ready(function () {
+            var data = '@Session["ACTIVER"]';
+
+            if (data == "Order") {
+                $('#Main-title').text("Order Monitor");
+            }
+            if (data == "Order Edit") {
+                $('#Main-title').text("Order Modifica");
+            }
+            if (data == "Add Order") {
+                $('#Main-title').text("New Order");
+            }
+            if (data == "Order Import") {
+                $('#Main-title').text("Import Orders");
+            }
+            if (data == "Customer") {
+                $('#Main-title').text("Customer Monitor");
+            }
+            if (data == "Customer Edit") {
+                $('#Main-title').text("Customer Modifica");
+            }
+            if (data == "Add Customer") {
+                $('#Main-title').text("New Customer");
+            }
+            if (data == "Customer Import") {
+                $('#Main-title').text("Import Customers");
+            }
+            if (data == "Supplier") {
+                $('#Main-title').text("Supplier Monitor");
+            }
+            if (data == "Supplier Edit") {
+                $('#Main-title').text("Supplier Modifica");
+            }
+            if (data == "Add Supplier") {
+                $('#Main-title').text("New Supplier");
+            }
+            if (data == "Supplier Import") {
+                $('#Main-title').text("Import Suppliers");
+            }
+            if (data == "Brand") {
+                $('#Main-title').text("Brand Monitor");
+            }
+            if (data == "Brand Edit") {
+                $('#Main-title').text("Brand Modifica");
+            }
+            if (data == "Add Brand") {
+                $('#Main-title').text("New Brand");
+            }
+            if (data == "Brand Import") {
+                $('#Main-title').text("Import Brands");
+            }
+            if (data == "Branch") {
+                $('#Main-title').text("Branch Monitor");
+            }
+            if (data == "Branch Edit") {
+                $('#Main-title').text("Branch Modifica");
+            }
+            if (data == "Add Branch") {
+                $('#Main-title').text("New Branch");
+            }
+            if (data == "Branch Import") {
+                $('#Main-title').text("Import Branches");
+            }
+            if (data == "Supplier/Brand") {
+                $('#Main-title').text("Supplier/Brand Monitor");
+            }
+            if (data == "Supplier/Brand Edit") {
+                $('#Main-title').text("Supplier/Brand Modifica");
+            }
+            if (data == "Add Supplier/Brand") {
+                $('#Main-title').text("New Supplier/Brand");
+            }
+            if (data == "Supplier/Brand Import") {
+                $('#Main-title').text("Import Supplier/Brands");
+            }
+        })
         function showLoadingSpinner() {
             document.getElementById('loadingSpinner').style.display = 'block';
         }

@@ -17,6 +17,8 @@ namespace DRS.Controllers
         // GET: Supplier
         public ActionResult Index(string SearchTerm = "")
         {
+            Session["ACTIVER"] = "Supplier";
+
             SupplierListingViewModel model = new SupplierListingViewModel();
             model.Suppliers = SupplierServices.Instance.GetSuppliers();
             return View("Index", model);
@@ -26,7 +28,15 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Action(int ID = 0)
         {
+            if (ID != 0)
+            {
+                Session["ACTIVER"] = "Supplier Edit";
+            }
+            else
+            {
+                Session["ACTIVER"] = "Add Supplier";
 
+            }
             SupplierActionViewModel model = new SupplierActionViewModel();
             if (ID != 0)
             {
@@ -112,6 +122,8 @@ namespace DRS.Controllers
         [HttpGet]
         public ActionResult Import()
         {
+            Session["ACTIVER"] = "Supplier Import";
+
             return View();
         }
         [HttpPost]
