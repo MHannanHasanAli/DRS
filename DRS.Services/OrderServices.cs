@@ -65,6 +65,7 @@ namespace DRS.Services
                  // Default value when there are no entries.
             }
         }
+        
         public Order GetOrderInOrders(int Sentid)
         {
             using (var context = new DSContext())
@@ -78,21 +79,21 @@ namespace DRS.Services
         {
             using (var context = new DSContext())
             {
-                var data = context.orders.ToList();
+                var data = context.orders.Where(x => x.Received== null ).ToList();
                 data.Reverse();
                 return data;
             }
         }
-        public List<Order> GetOrders(string SearchTerm)
-        {
-            using (var context = new DSContext())
-            {
-                return context.orders.Where(p => p.Note != null && p.Note.ToLower()
-                                            .Contains(SearchTerm.ToLower()))
-                                            .OrderBy(x => x.Note)
-                                            .ToList();
-            }
-        }
+        //public List<Order> GetOrders(string SearchTerm)
+        //{
+        //    using (var context = new DSContext())
+        //    {
+        //        return context.orders.Where(p => p.Note != null && p.Note.ToLower()
+        //                                    .Contains(SearchTerm.ToLower()))
+        //                                    .OrderBy(x => x.Note)
+        //                                    .ToList();
+        //    }
+        //}
 
         public Entities.Order GetOrderById(int id)
         {

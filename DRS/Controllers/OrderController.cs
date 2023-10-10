@@ -5,11 +5,16 @@ using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace DRS.Controllers
 {
@@ -161,6 +166,7 @@ namespace DRS.Controllers
                     Order.Chassis = LastOrder.Chassis;
                     //Order.IDUser = user.Name;
                     Order.Date = DateTime.Now;
+                    Order.Unavailability = CalculateDaysBetweenDates(Order.Date);
                     OrderServices.Instance.CreateOrder(Order);
 
                     var ModifiedOrder = OrderServices.Instance.GetLastOrderId();
@@ -328,6 +334,7 @@ namespace DRS.Controllers
                 Order.Attachment = model.Attachment;
                 Order.Received = model.Received;
                 Order.AlternativeCode = model.AlternativeCode;
+                Order.Unavailability = CalculateDaysBetweenDates(Order.Date);
                 checker = 1;
                 OrderServices.Instance.UpdateOrder(Order);
 
@@ -344,6 +351,7 @@ namespace DRS.Controllers
                 Order.Chassis = model.Chassis;
                 //Order.IDUser = user.Name;               
                 Order.Date = DateTime.Now;
+                Order.Unavailability = CalculateDaysBetweenDates(Order.Date);
                 OrderServices.Instance.CreateOrder(Order);
 
             }
@@ -380,5 +388,391 @@ namespace DRS.Controllers
 
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult ExportToExcel()
+        {
+
+
+            var orders = OrderServices.Instance.GetOrders();
+            var products = new List<Order_Item>();
+            foreach (var item in orders)
+            {
+                var data = Order_ItemServices.Instance.GetItemsByOrderID(item.ID);
+                products.Add(data);
+            }
+           
+
+            // Create a DataTable and populate it with the site data
+            System.Data.DataTable tableData = new System.Data.DataTable();
+            tableData.Columns.Add("Order Code", typeof(int)); // Replace "Column1" with the actual column name
+            tableData.Columns.Add("#N", typeof(int)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Fornitore", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Data Ordine", typeof(string)); // Replace "Column2" with the actual column nam
+            tableData.Columns.Add("Marca", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Targa", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Telaio", typeof(string)); // Replace "Column1" with the actual column name
+            tableData.Columns.Add("Codice", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Codice Alternativo", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Descrizione", typeof(string)); // Replace "Column2" with the actual column nam
+            tableData.Columns.Add("Qnt", typeof(int)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Data Consegna Prevists", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Alias", typeof(string)); // Replace "Column2" with the actual column nam
+            tableData.Columns.Add("Cliente", typeof(string));
+            tableData.Columns.Add("Branch", typeof(string)); // Replace "Column2" with the actual column nam
+            tableData.Columns.Add("Glorni Indisponibilita", typeof(int));// Replace "Column2" with the actual column name
+            tableData.Columns.Add("Allegato", typeof(string)); // Replace "Column2" with the actual column nam
+            tableData.Columns.Add("Note", typeof(string));
+            tableData.Columns.Add("User", typeof(string)); // Replace "Column2" with the actual column nam
+            tableData.Columns.Add("Sol 1", typeof(string));
+            tableData.Columns.Add("Sol 2", typeof(string));
+            tableData.Columns.Add("Sol 3", typeof(string));
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            foreach (var item in products)
+            {
+                foreach (var order in orders) {
+                   
+                    if(order.ID == item.IDOrder)
+                    {
+                        DataRow row = tableData.NewRow();
+                        row["Order Code"] = order.ID;
+                        row["#N"] = item.ID;
+
+                        var supplier = SupplierServices.Instance.GetSupplierById(order.IDSupplier);
+
+                       
+                        row["Fornitore"] = supplier.Description;
+                        row["Data Ordine"] = order.Date;
+
+                        var brand = BrandServices.Instance.GetBrandById(order.IDBrand);
+
+                        row["Marca"] = brand.Description;
+                        row["Targa"] = order.Plate;
+                        row["Telaio"] = order.Chassis;
+                        row["Codice"] = item.ItemCode;
+                        row["Codice Alternativo"] = order.AlternativeCode;
+                        row["Descrizione"] = item.Description;
+                        row["Qnt"] = item.Quantity;
+                        if(order.DeliveryDate != null)
+                        {
+                            row["Data Consegna Prevists"] = order.DeliveryDate.Value.ToShortDateString();
+                        }
+                        
+
+                        var customer = CustomerServices.Instance.GetCustomerById(order.IDCustomer);
+
+                        row["Alias"] = customer.Alias;
+                        row["Cliente"] = customer.Description;
+
+                        var branch = BranchServices.Instance.GetBranchById(order.IDBranch);
+
+                        row["Branch"] = branch.Description;
+                        row["Glorni Indisponibilita"] = order.Unavailability;
+                        if(order.Attachment == "on")
+                        {
+                            row["Allegato"] = "Yes";
+                        }
+                        else
+                        {
+                            row["Allegato"] = "No";
+                        }
+                        row["Note"] = item.Note;
+
+                        var user = UserManager.FindById(order.IDUser);
+
+                        //row["User"] = user.Name;
+                        if(order.Reminder1 != null)
+                        {
+                            row["Sol 1"] = order.Reminder1.Value.ToShortDateString();
+
+                        }
+                        
+                        if (order.Reminder2 != null)
+                        {
+                            row["Sol 2"] = order.Reminder2.Value.ToShortDateString();
+
+                        }
+                        
+                        if (order.Reminder3 != null)
+                        {
+                            row["Sol 3"] = order.Reminder3.Value.ToShortDateString();
+
+                        }
+                        
+                       
+                        tableData.Rows.Add(row);
+                    }
+                   
+                }
+                
+            }
+
+            // Create the Excel package
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                // Create a new worksheet
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Products");
+
+                // Set the column names
+                for (int i = 0; i < tableData.Columns.Count; i++)
+                {
+                    worksheet.Cells[1, i + 1].Value = tableData.Columns[i].ColumnName;
+                }
+
+                // Set the row data
+                for (int row = 0; row < tableData.Rows.Count; row++)
+                {
+                    for (int col = 0; col < tableData.Columns.Count; col++)
+                    {
+                        worksheet.Cells[row + 2, col + 1].Value = tableData.Rows[row][col];
+                    }
+                }
+
+                // Auto-fit columns for better readability
+                worksheet.Cells.AutoFitColumns();
+
+                // Convert the Excel package to a byte array
+                byte[] excelBytes = package.GetAsByteArray();
+
+                // Return the Excel file as a downloadable file
+                return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ActiveOrders.xlsx");
+            }
+        }
+        [HttpGet]
+        public ActionResult Import()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase excelfile)
+        {
+            if (excelfile == null || excelfile.ContentLength == 0)
+            {
+                ViewBag.Error = "Please Select Excel File";
+                return View();
+            }
+            else
+            {
+                var items = new List<Order_Item>();
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // or LicenseContext.Commercial
+
+                if (excelfile != null && excelfile.ContentLength > 0)
+                {
+                    using (var package = new ExcelPackage(excelfile.InputStream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension.Rows;
+
+                        for (int row = 2; row <= rowCount; row++) // Assuming the first row is header
+                        {
+                            var order = new Order();
+                            var orderitem = new Order_Item();
+                            if (worksheet.Cells[row, 1].Value == null && worksheet.Cells[row, 2].Value == null && worksheet.Cells[row, 6].Value == null)
+                            {
+                                continue;
+                            }
+
+                            if (worksheet.Cells[row, 1].Value != null)
+                            {
+                                var Supplier = SupplierServices.Instance.GetSupplier(worksheet.Cells[row, 1].Value.ToString()).FirstOrDefault(); ;
+                                if(Supplier != null)
+                                {
+                                    order.IDSupplier = Supplier.ID;
+                                }
+                                else
+                                {
+                                    var supplier = new Supplier();
+                                    supplier.Description = worksheet.Cells[row, 1].Value.ToString();
+                                    SupplierServices.Instance.CreateSupplier(supplier);
+                                    var NewSupplier = SupplierServices.Instance.GetLastEntryId();
+                                    order.IDSupplier = NewSupplier;
+                                }
+                            }
+                          order.Date = DateTime.Now;
+                            if (worksheet.Cells[row, 2].Value != null)
+                            {
+                                var brand = BrandServices.Instance.GetBrand(worksheet.Cells[row, 2].Value.ToString()).FirstOrDefault();
+                                if (brand != null)
+                                {
+                                    order.IDBrand = brand.ID;
+                                }
+                                else
+                                {
+                                    var Brand = new Brand();
+                                    Brand.Description = worksheet.Cells[row, 2].Value.ToString();
+                                    BrandServices.Instance.CreateBrand(Brand);
+                                    var NewBrand = BrandServices.Instance.GetLastEntryId();
+                                    order.IDBrand = NewBrand;
+                                }
+                            }
+
+                            
+                            //ProductName
+                            if (worksheet.Cells[row, 3].Value != null)
+                            {
+                                order.Plate = worksheet.Cells[row, 3].Value.ToString();
+                            }
+                            else
+                            {
+                                order.Plate = "Not Specified";
+                            }
+
+                            if (worksheet.Cells[row, 4].Value != null)
+                            {
+                               order.Chassis = worksheet.Cells[row, 4].Value.ToString();
+                            }
+                            else
+                            {
+                                order.Chassis = "Not Specified";
+                            }
+                            if (worksheet.Cells[row, 5].Value != null)
+                            {
+                                orderitem.ItemCode = worksheet.Cells[row, 5].Value.ToString();
+                            }
+                            else
+                            {
+                                orderitem.ItemCode = "Not Specified";
+                            }
+                            if (worksheet.Cells[row, 6].Value != null)
+                            {
+                                order.AlternativeCode = worksheet.Cells[row, 6].Value.ToString();
+                            }
+                            else
+                            {
+                                order.AlternativeCode = "Not Specified";
+                            }
+                            if (worksheet.Cells[row, 7].Value != null)
+                            {
+                                orderitem.Description = worksheet.Cells[row, 7].Value.ToString();
+                            }
+                            else
+                            {
+                                orderitem.Description = "Not Specified";
+                            }
+                            if (worksheet.Cells[row, 8].Value != null)
+                            {
+                                orderitem.Quantity = int.Parse(worksheet.Cells[row, 8].Value.ToString());
+                            }
+                            else
+                            {
+                                orderitem.Quantity = 0;
+                            }
+                            if (worksheet.Cells[row, 9].Value != null)
+                            {
+                               order.DeliveryDate = DateTime.Parse(worksheet.Cells[row, 9].Value.ToString());
+                            }
+                            
+                            if (worksheet.Cells[row, 11].Value != null)
+                            {
+                                 var customer =CustomerServices.Instance.GetCustomer(worksheet.Cells[row, 11].Value.ToString()).FirstOrDefault();
+                                if (customer != null)
+                                {
+                                    order.IDCustomer = customer.ID;
+                                    
+                                }
+                                else
+                                {
+                                    var Customer = new Customer();
+                                    Customer.Description = worksheet.Cells[row, 11].Value.ToString();
+                                    Customer.Alias = worksheet.Cells[row, 10].Value.ToString();
+                                    CustomerServices.Instance.CreateCustomer(Customer);
+                                    var NewCustomer = CustomerServices.Instance.GetLastEntryId();
+                                    order.IDCustomer = NewCustomer;
+                                }
+                            }
+                            if (worksheet.Cells[row, 12].Value != null)
+                            {
+                                var branch = BranchServices.Instance.GetBranch(worksheet.Cells[row, 12].Value.ToString()).FirstOrDefault();
+                                if (branch != null)
+                                {
+                                    order.IDBranch = branch.ID;
+
+                                }
+                                else
+                                {
+                                    var Branch = new Branch();
+                                    Branch.Description = worksheet.Cells[row, 12].Value.ToString();
+                                    BranchServices.Instance.CreateBranch(Branch);                                    
+                                    var NewBranch = BranchServices.Instance.GetLastEntryId();
+                                    order.IDBranch= NewBranch;
+                                }
+                            }
+                            if (worksheet.Cells[row, 13].Value != null)
+                            {
+                                order.Unavailability = int.Parse(worksheet.Cells[row, 13].Value.ToString());
+                            }
+                            else
+                            {
+                                order.Unavailability = 0;
+                            }
+
+
+                            if (worksheet.Cells[row, 14].Value != null)
+                            {
+                                if (worksheet.Cells[row, 14].Value.ToString() == "Yes")
+                                {
+                                    order.Attachment = "on";
+                                }
+                                
+                            }
+                            
+
+                            if (worksheet.Cells[row, 15].Value != null)
+                            {
+                                orderitem.Note = worksheet.Cells[row, 15].Value.ToString(); //SKU
+
+                            }
+                            else
+                            {
+                                orderitem.Note = "Not Specified";
+                            }
+
+                            if (worksheet.Cells[row, 16].Value != null)
+                            {
+                                order.Reminder1 = DateTime.Parse(worksheet.Cells[row, 16].Value.ToString());
+                            }
+
+                            if (worksheet.Cells[row, 17].Value != null)
+                            {
+                                order.Reminder2 = DateTime.Parse(worksheet.Cells[row, 17].Value.ToString());
+                            }
+
+                            if (worksheet.Cells[row, 18].Value != null)
+                            {
+                                order.Reminder3 = DateTime.Parse(worksheet.Cells[row, 18].Value.ToString());
+                            }
+
+                           
+                            items.Add(orderitem);
+                            OrderServices.Instance.CreateOrder(order);
+                            var lastid = OrderServices.Instance.GetLastOrderId();
+                            orderitem.IDOrder = lastid.ID;
+                            Order_ItemServices.Instance.CreateOrder_Item(orderitem);
+
+
+                        }
+
+                    }
+                    ViewBag.Products = items;
+                    return View();
+
+                }
+
+
+
+                else
+                {
+                    ViewBag.Error = "Incorrect File";
+
+                    return View();
+                }
+            }
+
+            //var Prcoess = Process.GetProcessesByName("EXCEL.EXE").FirstOrDefault();
+            //Prcoess.Kill();
+
+        }
+
+
     }
 }

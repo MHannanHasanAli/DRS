@@ -289,7 +289,7 @@
             }
             else
             {
-                <button id="AddItemButton" type="button" class="btn btn-primary">Add Item</button>
+                <button id="AddItemButton" type="button" class="btn btn-primary">Add Item</button><br />
             }
 
 
@@ -317,7 +317,7 @@
 
 <script>
     $(document).ready(function () {
-        debugger
+
         var selectedSupplierID = '@Model.IDSupplier'; // Convert the Model.IDSupplier to a string
         var editoption = '@Model.ID';
 if (selectedSupplierID !== 'null') {
@@ -334,10 +334,14 @@ if (selectedSupplierID !== 'null') {
                     // Clear and populate the IDSupplier dropdown with the received data
                     var IDSupplierDropdown = $('#IDSupplier');
                     IDSupplierDropdown.empty();
-
+                    var flag = 0;
                     // Iterate through the received data and populate the dropdown
                     $.each(data, function (index, supplier) {
                         IDSupplierDropdown.append($('<option></option>').attr('value', supplier.ID).text(supplier.Description));
+                        if (flag === 0) {
+                            option.attr('selected', 'selected');
+                            flag = 1;
+                        }
                     });
                      var selectedSupplierID = '@Model.IDSupplier'; // Convert the Model.IDSupplier to a string
 
@@ -350,7 +354,12 @@ if (selectedSupplierID !== 'null') {
                 }
             });
         }
-        appendProductToTable();
+        if (editoption === 0) {
+            appendProductToTable();
+        } else {
+            
+        }
+        
         // Handle the change event of the IDBrand dropdown
         $('#IDBrand').change(function () {
             var selectedBrandID = $(this).val(); // Get the selected Brand ID

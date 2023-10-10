@@ -42,6 +42,20 @@ namespace DRS.Services
                 }
             }
         }
+        public int GetLastEntryId()
+        {
+            using (var context = new DSContext())
+            {
+                var lastAdjustment = context.suppliers.OrderByDescending(a => a.ID).FirstOrDefault();
+                if (lastAdjustment != null)
+                {
+                    return lastAdjustment.ID;
+                }
+                // Return a default value (e.g., -1) or throw an exception if there are no entries.
+                // You can decide the appropriate behavior based on your application requirements.
+                return -1; // Default value when there are no entries.
+            }
+        }
         public List<string> GetSupplierNames()
         {
             using (var context = new DSContext())

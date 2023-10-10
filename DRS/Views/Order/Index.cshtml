@@ -31,32 +31,41 @@
     .dataTables_filter {
         float: right;
     }
+    .top-portion {
+        width: 100%;
+        display: flex;
+    }
+    #searchdropdown{
+        margin-left: 30px;
+    }
 </style>
 
 <div class="container">
     <div class="card">
+        <div>
+            <h2>Order Monitor</h2>
+        </div>
         <div class="card-body  container-top">
-            <div>
-                <h2>Order </h2>
-            </div>
-            <div>
-                <div>
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-search"></i></span>
-                    </div>
+
+            <br />
+            <div class="top-portion">
+                <div class="input-group-prepend flexer">
+                    <span class="input-group-text"><i class="fa fa-search"></i></span>
                     <input id="searchbar" class="form-control" placeholder="Search">
+                    <select id="searchdropdown">
+                        <option value="Fornitore">Fornitore</option>
+                        <option value="Marca">Marca</option>
+                        <option value="Alias">Alias</option>
+                        <option value="Cliente">Cliente</option>
+                        <option value="Branch">Branch</option>
+                        <option value="User">User</option>
+                    </select>
                 </div>
-                <select id="searchdropdown">
-                    <option value="Fornitore">Fornitore</option>
-                    <option value="Marca">Marca</option>
-                    <option value="Alias">Alias</option>
-                    <option value="Cliente">Cliente</option>
-                    <option value="Branch">Branch</option>
-                    <option value="User">User</option>
-                </select>
+
                 <form>
 
                     <div class="input-group">
+                        <a href="@Url.Action("ExportToExcel", "Order")" class=" btn btn-rounded blue"><i class="fas fa-upload"></i>&nbsp; Export</a>
 
                         @Html.ValidationSummary("", new { @class = "text-danger" })
                         <a href="@Url.Action("Action", "Order")" class=" btn btn-rounded blue"><i class="fas fa-user-plus"></i>&nbsp; Aggiungi</a>

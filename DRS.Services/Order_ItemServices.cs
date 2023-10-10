@@ -42,6 +42,15 @@ namespace DRS.Services
                 }
             }
         }
+
+        public Order_Item GetItemsByOrderID(int ID)
+        {
+            using (var context = new DSContext())
+            {
+                var data = context.orderitems.Where(x => x.IDOrder == ID).FirstOrDefault();       
+                return data;
+            }
+        }
         public List<string> GetOrder_ItemNames()
         {
             using (var context = new DSContext())
