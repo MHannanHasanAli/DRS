@@ -565,9 +565,10 @@ namespace DRS.Controllers
 
                         for (int row = 2; row <= rowCount; row++) // Assuming the first row is header
                         {
-                            var order = new Order();
+                           
+                                var order = new Order();
                             var orderitem = new Order_Item();
-                            if (worksheet.Cells[row, 1].Value == null && worksheet.Cells[row, 2].Value == null && worksheet.Cells[row, 6].Value == null)
+                            if (worksheet.Cells[row, 7].Value != null)
                             {
                                 continue;
                             }

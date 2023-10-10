@@ -52,12 +52,8 @@
                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                     <input id="searchbar" class="form-control" placeholder="Search">
                     <select id="searchdropdown">
-                        <option value="Fornitore">Fornitore</option>
-                        <option value="Marca">Marca</option>
-                        <option value="Alias">Alias</option>
-                        <option value="Cliente">Cliente</option>
-                        <option value="Branch">Branch</option>
-                        <option value="User">User</option>
+                        <option value="Fornitore">Descrizione</option>
+                      
                     </select>
                 </div>
                 <form>
@@ -93,6 +89,7 @@
                                             <th>Whatsapp</th>
                                             <th>Email</th>
                                             <th>Note</th>
+                                            <th>Contact</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -134,12 +131,13 @@
                                                 <td>@item.Whatsapp</td>
                                                 <td>@item.Email</td>
                                                 <td>@item.Note</td>
+                                                <td>@item.Contact</td>
                                                 @*<td>@item._File</td>*@
                                                 @*<td>
-                                                        <a class="btn" href="@Url.Action("DownloadFile", "Shared", new { path = item._File })">
-                                                            <i class="fa fa-download" aria-hidden="true"></i>
-                                                        </a>
-                                                    </td>*@
+            <a class="btn" href="@Url.Action("DownloadFile", "Shared", new { path = item._File })">
+                <i class="fa fa-download" aria-hidden="true"></i>
+            </a>
+        </td>*@
                                             </tr>
                                         }
                                     </tbody>
@@ -173,7 +171,28 @@
 
 <script>
     $(document).ready(function () {
+        var tableBody = $('#example1 tbody');
+        var originalRows = tableBody.find('tr').clone();
+        var dropdownValue = $('#searchdropdown').val();
 
+        $('#searchbar').on('input', function () {
+            var inputValue = $(this).val().trim().toLowerCase();
+            var dropdownValue = $('#searchdropdown').val();
+
+            tableBody.empty();
+
+            originalRows.each(function () {
+                var row = $(this);
+
+                var fornitoreCell = row.find('td:eq(2)').text().toLowerCase(); // Index 3 corresponds to the "Fornitore" column
+
+
+
+                if (fornitoreCell.includes(inputValue)) {
+                    tableBody.append(row.clone());
+                }
+            });
+        });
         $("#example1").DataTable({
 
             "responsive": true, "lengthChange": false, "autoWidth": false,

@@ -52,12 +52,9 @@
                     <span class="input-group-text"><i class="fa fa-search"></i></span>
                     <input id="searchbar" class="form-control" placeholder="Search">
                     <select id="searchdropdown">
-                        <option value="Fornitore">Fornitore</option>
-                        <option value="Marca">Marca</option>
+                        <option value="Description">Descrizione</option>
                         <option value="Alias">Alias</option>
-                        <option value="Cliente">Cliente</option>
-                        <option value="Branch">Branch</option>
-                        <option value="User">User</option>
+                   
                     </select>
                 </div>
                 <form>
@@ -175,7 +172,31 @@
 
 <script>
     $(document).ready(function () {
+        var tableBody = $('#example1 tbody');
+        var originalRows = tableBody.find('tr').clone();
+        var dropdownValue = $('#searchdropdown').val();
 
+        $('#searchbar').on('input', function () {
+            var inputValue = $(this).val().trim().toLowerCase();
+            var dropdownValue = $('#searchdropdown').val();
+
+            tableBody.empty();
+
+            originalRows.each(function () {
+                var row = $(this);
+                if (dropdownValue === "Alias") {
+                    var fornitoreCell = row.find('td:eq(3)').text().toLowerCase(); // Index 3 corresponds to the "Fornitore" column
+
+                } else{
+                    var fornitoreCell = row.find('td:eq(2)').text().toLowerCase(); // Index 3 corresponds to the "Fornitore" column
+
+                } 
+
+                if (fornitoreCell.includes(inputValue)) {
+                    tableBody.append(row.clone());
+                }
+            });
+        });
         $("#example1").DataTable({
 
             "responsive": true, "lengthChange": false, "autoWidth": false,
