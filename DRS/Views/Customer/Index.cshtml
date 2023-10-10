@@ -60,6 +60,7 @@
                 <form>
 
                     <div class="input-group">
+                        <a href="@Url.Action("ExportToExcel", "Customer")" class=" btn btn-rounded blue"><i class="fas fa-upload"></i>&nbsp; Export</a>
 
                         @Html.ValidationSummary("", new { @class = "text-danger" })
                         <a href="@Url.Action("Action", "Customer")" class=" btn btn-rounded blue"><i class="fas fa-user-plus"></i>&nbsp; Aggiungi</a>

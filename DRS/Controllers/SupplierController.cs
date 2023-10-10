@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DRS.Entities;
 using DRS.Services;
 using DRS.ViewModels;
+using Microsoft.AspNet.Identity;
+using OfficeOpenXml;
 
 namespace DRS.Controllers
 {
@@ -39,7 +43,72 @@ namespace DRS.Controllers
             }
             return View("Action", model);
         }
+        public ActionResult ExportToExcel()
+        {
 
+            var supplier = SupplierServices.Instance.GetSuppliers();
+
+
+            System.Data.DataTable tableData = new System.Data.DataTable();
+            tableData.Columns.Add("ID", typeof(int)); // Replace "Column1" with the actual column name
+            tableData.Columns.Add("Description", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Telephone", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Whatsapp", typeof(string)); // Replace "Column2" with the actual column nam
+            tableData.Columns.Add("Email", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Note", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Contact", typeof(string)); // Replace "Column1" with the actual column name
+            
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+                foreach (var item in supplier)
+                {
+                        DataRow row = tableData.NewRow();
+                        row["ID"] = item.ID;
+                        row["Description"] = item.Description;
+                        row["Telephone"] = item.Telephone;
+                        row["Whatsapp"] = item.Whatsapp;
+                        row["Email"] = item.Email;
+                        row["Note"] = item.Note;
+                        row["Contact"] = item.Contact;
+
+                        tableData.Rows.Add(row);
+                }
+
+                
+
+            
+
+            // Create the Excel package
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                // Create a new worksheet
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Products");
+
+                // Set the column names
+                for (int i = 0; i < tableData.Columns.Count; i++)
+                {
+                    worksheet.Cells[1, i + 1].Value = tableData.Columns[i].ColumnName;
+                }
+
+                // Set the row data
+                for (int row = 0; row < tableData.Rows.Count; row++)
+                {
+                    for (int col = 0; col < tableData.Columns.Count; col++)
+                    {
+                        worksheet.Cells[row + 2, col + 1].Value = tableData.Rows[row][col];
+                    }
+                }
+
+                // Auto-fit columns for better readability
+                worksheet.Cells.AutoFitColumns();
+
+                // Convert the Excel package to a byte array
+                byte[] excelBytes = package.GetAsByteArray();
+
+                // Return the Excel file as a downloadable file
+                return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Suppliers.xlsx");
+            }
+        }
 
         [HttpPost]
         public ActionResult Action(SupplierActionViewModel model)
