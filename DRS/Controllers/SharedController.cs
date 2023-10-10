@@ -32,7 +32,25 @@ namespace DRS.Controllers
             return result;
         }
 
+        public FileResult DownloadFile(string path)
+        {
+            if (System.IO.File.Exists(Server.MapPath(path)))
+            {
+                // Determine the content type (MIME type) of the file
+                string contentType = MimeMapping.GetMimeMapping(Server.MapPath(path));
 
+                // Read the file data into a byte array
+                byte[] fileBytes = System.IO.File.ReadAllBytes(Server.MapPath(path));
+
+                // Create a FileContentResult to send the file to the client
+                return File(fileBytes, contentType, Path.GetFileName(Server.MapPath(path)));
+            }
+            else
+            {
+                // Return a not found response if the file doesn't exist
+                return null;
+            }
+        }
 
         public JsonResult ArticleUploadImage()
         {

@@ -75,6 +75,11 @@ namespace DRS.Controllers
             int daysDifference = (int)timeSpan.TotalDays;
             return daysDifference;
         }
+        [HttpGet]
+        public ActionResult Import()
+        {
+            return View();
+        }
         // GET: Order
         [HttpPost] // You can use [HttpGet] if appropriate
         public ActionResult GetSuppliersByBrand(int brandID)
@@ -538,11 +543,7 @@ namespace DRS.Controllers
                 return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ActiveOrders.xlsx");
             }
         }
-        [HttpGet]
-        public ActionResult Import()
-        {
-            return View();
-        }
+      
         [HttpPost]
         public ActionResult Import(HttpPostedFileBase excelfile)
         {
@@ -568,7 +569,7 @@ namespace DRS.Controllers
                            
                                 var order = new Order();
                             var orderitem = new Order_Item();
-                            if (worksheet.Cells[row, 7].Value != null)
+                            if (worksheet.Cells[row, 7].Value == null)
                             {
                                 continue;
                             }
@@ -658,14 +659,11 @@ namespace DRS.Controllers
                             {
                                 orderitem.Quantity = 0;
                             }
-                            if (worksheet.Cells[row, 9].Value != null)
-                            {
-                               order.DeliveryDate = DateTime.Parse(worksheet.Cells[row, 9].Value.ToString());
-                            }
+                           
                             
-                            if (worksheet.Cells[row, 11].Value != null)
+                            if (worksheet.Cells[row, 10].Value != null)
                             {
-                                 var customer =CustomerServices.Instance.GetCustomer(worksheet.Cells[row, 11].Value.ToString()).FirstOrDefault();
+                                 var customer =CustomerServices.Instance.GetCustomer(worksheet.Cells[row, 10].Value.ToString()).FirstOrDefault();
                                 if (customer != null)
                                 {
                                     order.IDCustomer = customer.ID;
@@ -674,16 +672,16 @@ namespace DRS.Controllers
                                 else
                                 {
                                     var Customer = new Customer();
-                                    Customer.Description = worksheet.Cells[row, 11].Value.ToString();
-                                    Customer.Alias = worksheet.Cells[row, 10].Value.ToString();
+                                    Customer.Description = worksheet.Cells[row, 10].Value.ToString();
+                                    Customer.Alias = worksheet.Cells[row, 9].Value.ToString();
                                     CustomerServices.Instance.CreateCustomer(Customer);
                                     var NewCustomer = CustomerServices.Instance.GetLastEntryId();
                                     order.IDCustomer = NewCustomer;
                                 }
                             }
-                            if (worksheet.Cells[row, 12].Value != null)
+                            if (worksheet.Cells[row, 11].Value != null)
                             {
-                                var branch = BranchServices.Instance.GetBranch(worksheet.Cells[row, 12].Value.ToString()).FirstOrDefault();
+                                var branch = BranchServices.Instance.GetBranch(worksheet.Cells[row, 11].Value.ToString()).FirstOrDefault();
                                 if (branch != null)
                                 {
                                     order.IDBranch = branch.ID;
@@ -692,25 +690,18 @@ namespace DRS.Controllers
                                 else
                                 {
                                     var Branch = new Branch();
-                                    Branch.Description = worksheet.Cells[row, 12].Value.ToString();
+                                    Branch.Description = worksheet.Cells[row, 11].Value.ToString();
                                     BranchServices.Instance.CreateBranch(Branch);                                    
                                     var NewBranch = BranchServices.Instance.GetLastEntryId();
                                     order.IDBranch= NewBranch;
                                 }
                             }
-                            if (worksheet.Cells[row, 13].Value != null)
-                            {
-                                order.Unavailability = int.Parse(worksheet.Cells[row, 13].Value.ToString());
-                            }
-                            else
-                            {
-                                order.Unavailability = 0;
-                            }
+                           
 
 
-                            if (worksheet.Cells[row, 14].Value != null)
+                            if (worksheet.Cells[row, 12].Value != null)
                             {
-                                if (worksheet.Cells[row, 14].Value.ToString() == "Yes")
+                                if (worksheet.Cells[row, 12].Value.ToString() == "Yes")
                                 {
                                     order.Attachment = "on";
                                 }
@@ -718,9 +709,9 @@ namespace DRS.Controllers
                             }
                             
 
-                            if (worksheet.Cells[row, 15].Value != null)
+                            if (worksheet.Cells[row, 13].Value != null)
                             {
-                                orderitem.Note = worksheet.Cells[row, 15].Value.ToString(); //SKU
+                                orderitem.Note = worksheet.Cells[row, 13].Value.ToString(); //SKU
 
                             }
                             else
@@ -728,21 +719,7 @@ namespace DRS.Controllers
                                 orderitem.Note = "Not Specified";
                             }
 
-                            if (worksheet.Cells[row, 16].Value != null)
-                            {
-                                order.Reminder1 = DateTime.Parse(worksheet.Cells[row, 16].Value.ToString());
-                            }
-
-                            if (worksheet.Cells[row, 17].Value != null)
-                            {
-                                order.Reminder2 = DateTime.Parse(worksheet.Cells[row, 17].Value.ToString());
-                            }
-
-                            if (worksheet.Cells[row, 18].Value != null)
-                            {
-                                order.Reminder3 = DateTime.Parse(worksheet.Cells[row, 18].Value.ToString());
-                            }
-
+                           
                            
                             items.Add(orderitem);
                             OrderServices.Instance.CreateOrder(order);

@@ -34,6 +34,7 @@
     .top-portion {
         width: 100%;
         display: flex;
+        justify-content: space-between;
     }
     #searchdropdown{
         margin-left: 30px;
@@ -65,10 +66,12 @@
                 <form>
 
                     <div class="input-group">
+                        <a href="@Url.Action("Import", "Order")" class=" btn btn-rounded blue"><i class="fas fa-upload"></i>&nbsp; Import</a>
+
                         <a href="@Url.Action("ExportToExcel", "Order")" class=" btn btn-rounded blue"><i class="fas fa-upload"></i>&nbsp; Export</a>
 
                         @Html.ValidationSummary("", new { @class = "text-danger" })
-                        <a href="@Url.Action("Action", "Order")" class=" btn btn-rounded blue"><i class="fas fa-user-plus"></i>&nbsp; Aggiungi</a>
+                        <a href="@Url.Action("Action", "Order")" class=" btn btn-rounded blue"><i class="fas fa-plus-square"></i>&nbsp; Aggiungi</a>
 
                     </div>
                 </form>

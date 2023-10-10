@@ -4,9 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DRS.Entities;
 using DRS.Services;
 using DRS.ViewModels;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace DRS.Controllers
 {
@@ -19,7 +21,11 @@ namespace DRS.Controllers
             model.Customers = CustomerServices.Instance.GetCustomers();
             return View("Index", model);
         }
-
+        [HttpGet]
+        public ActionResult Import()
+        {
+            return View();
+        }
 
         [HttpGet]
         public ActionResult Action(int ID = 0)
@@ -109,7 +115,111 @@ namespace DRS.Controllers
                 return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Customers.xlsx");
             }
         }
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase excelfile)
+        {
+            if (excelfile == null || excelfile.ContentLength == 0)
+            {
+                ViewBag.Error = "Please Select Excel File";
+                return View();
+            }
+            else
+            {
+                var items = new List<Customer>();
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // or LicenseContext.Commercial
 
+                if (excelfile != null && excelfile.ContentLength > 0)
+                {
+                    using (var package = new ExcelPackage(excelfile.InputStream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension.Rows;
+                        
+
+                        for (int row = 2; row <= rowCount; row++) // Assuming the first row is header
+                        {
+
+                            var Customer = new Customer();
+                           
+                            if (worksheet.Cells[row, 1].Value == null)
+                            {
+                                continue;
+                            }
+
+                            if (worksheet.Cells[row, 1].Value != null)
+                            {
+                                Customer.Description = worksheet.Cells[row, 1].Value.ToString();
+                            }
+                            if (worksheet.Cells[row, 2].Value != null)
+                            {
+                                Customer.Alias = worksheet.Cells[row, 2].Value.ToString();
+
+                            }
+                            else
+                            {
+                                Customer.Alias = "Not Specified";
+                            }
+
+
+                            //ProductName
+                            if (worksheet.Cells[row, 3].Value != null)
+                            {
+                                Customer.Telephone = worksheet.Cells[row, 3].Value.ToString();
+                            }
+                            else
+                            {
+                                Customer.Telephone = "Not Specified";
+                            }
+
+                            if (worksheet.Cells[row, 4].Value != null)
+                            {
+                                Customer.Whatsapp = worksheet.Cells[row, 4].Value.ToString();
+                            }
+                            else
+                            {
+                                Customer.Whatsapp = "Not Specified";
+                            }
+                            if (worksheet.Cells[row, 5].Value != null)
+                            {
+                                Customer.Email = worksheet.Cells[row, 5].Value.ToString();
+                            }
+                            else
+                            {
+                                Customer.Email = "Not Specified";
+                            }
+                            if (worksheet.Cells[row, 6].Value != null)
+                            {
+                                Customer.Note = worksheet.Cells[row, 6].Value.ToString();
+                            }
+                            else
+                            {
+                                Customer.Note = "Not Specified";
+                            }
+
+                            items.Add(Customer);
+                            CustomerServices.Instance.CreateCustomer(Customer);
+                        }
+
+                    }
+                    ViewBag.Products = items;
+                    return View();
+
+                }
+
+
+
+                else
+                {
+                    ViewBag.Error = "Incorrect File";
+
+                    return View();
+                }
+            }
+
+            //var Prcoess = Process.GetProcessesByName("EXCEL.EXE").FirstOrDefault();
+            //Prcoess.Kill();
+
+        }
         [HttpPost]
         public ActionResult Action(CustomerActionViewModel model)
         {

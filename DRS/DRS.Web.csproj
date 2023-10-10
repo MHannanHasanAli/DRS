@@ -1210,6 +1210,12 @@
     <Content Include="Content\template\vendors\typicons\typicons.eot" />
     <Content Include="Content\template\vendors\typicons\typicons.ttf" />
     <Content Include="Content\template\vendors\typicons\typicons.woff" />
+    <Content Include="Content\DemoFiles\BranchesDemoImport.xlsx" />
+    <Content Include="Content\DemoFiles\OrdersDemoImport.xlsx" />
+    <Content Include="Content\DemoFiles\SupplierBrandDemoImport.xlsx" />
+    <Content Include="Content\DemoFiles\BrandsDemoImport.xlsx" />
+    <Content Include="Content\DemoFiles\CustomersDemoImport.xlsx" />
+    <Content Include="Content\DemoFiles\SuppliersDemoImport.xlsx" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -1289,6 +1295,11 @@
     <Content Include="Views\Supplier_Brand\Action.cshtml" />
     <Content Include="Views\Supplier_Brand\Index.cshtml" />
     <Content Include="Views\Order\Import.cshtml" />
+    <Content Include="Views\Customer\Import.cshtml" />
+    <Content Include="Views\Supplier\Import.cshtml" />
+    <Content Include="Views\Branch\Import.cshtml" />
+    <Content Include="Views\Brand\Import.cshtml" />
+    <Content Include="Views\Supplier_Brand\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

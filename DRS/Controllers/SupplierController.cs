@@ -109,7 +109,114 @@ namespace DRS.Controllers
                 return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Suppliers.xlsx");
             }
         }
+        [HttpGet]
+        public ActionResult Import()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase excelfile)
+        {
+            if (excelfile == null || excelfile.ContentLength == 0)
+            {
+                ViewBag.Error = "Please Select Excel File";
+                return View();
+            }
+            else
+            {
+                var items = new List<Supplier>();
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // or LicenseContext.Commercial
 
+                if (excelfile != null && excelfile.ContentLength > 0)
+                {
+                    using (var package = new ExcelPackage(excelfile.InputStream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension.Rows;
+
+
+                        for (int row = 2; row <= rowCount; row++) // Assuming the first row is header
+                        {
+
+                            var Supplier = new Supplier();
+
+                            if (worksheet.Cells[row, 1].Value == null)
+                            {
+                                continue;
+                            }
+
+                            if (worksheet.Cells[row, 1].Value != null)
+                            {
+                                Supplier.Description = worksheet.Cells[row, 1].Value.ToString();
+                            }
+
+                            //ProductName
+                            if (worksheet.Cells[row, 2].Value != null)
+                            {
+                                Supplier.Telephone = worksheet.Cells[row, 2].Value.ToString();
+                            }
+                            else
+                            {
+                                Supplier.Telephone = "Not Specified";
+                            }
+
+                            if (worksheet.Cells[row, 3].Value != null)
+                            {
+                                Supplier.Whatsapp = worksheet.Cells[row, 3].Value.ToString();
+                            }
+                            else
+                            {
+                                Supplier.Whatsapp = "Not Specified";
+                            }
+                            if (worksheet.Cells[row, 4].Value != null)
+                            {
+                                Supplier.Email = worksheet.Cells[row, 4].Value.ToString();
+                            }
+                            else
+                            {
+                                Supplier.Email = "Not Specified";
+                            }
+                            if (worksheet.Cells[row, 5].Value != null)
+                            {
+                                Supplier.Note = worksheet.Cells[row, 5].Value.ToString();
+                            }
+                            else
+                            {
+                                Supplier.Note = "Not Specified";
+                            }
+                            if (worksheet.Cells[row, 6].Value != null)
+                            {
+                                Supplier.Contact = worksheet.Cells[row, 6].Value.ToString();
+                            }
+                            else
+                            {
+                                Supplier.Contact = "Not Specified";
+                            }
+
+                            items.Add(Supplier);
+                            SupplierServices.Instance.CreateSupplier(Supplier);
+                        }
+
+                    }
+                    ViewBag.Products = items;
+                    return View();
+
+                }
+
+
+
+                else
+                {
+                    ViewBag.Error = "Incorrect File";
+
+                    return View();
+                }
+            }
+
+            //var Prcoess = Process.GetProcessesByName("EXCEL.EXE").FirstOrDefault();
+            //Prcoess.Kill();
+
+        }
         [HttpPost]
         public ActionResult Action(SupplierActionViewModel model)
         {

@@ -59,9 +59,12 @@
                 <form>
 
                     <div class="input-group">
+                        <a href="@Url.Action("Import", "Supplier_Brand")" class=" btn btn-rounded blue"><i class="fas fa-upload"></i>&nbsp; Import</a>
+
+                        <a href="@Url.Action("ExportToExcel", "Supplier_Brand")" class=" btn btn-rounded blue"><i class="fas fa-upload"></i>&nbsp; Export</a>
 
                         @Html.ValidationSummary("", new { @class = "text-danger" })
-                        <a href="@Url.Action("Action", "Supplier_Brand")" class=" btn btn-rounded blue"><i class="fas fa-user-plus"></i>&nbsp; Aggiungi</a>
+                        <a href="@Url.Action("Action", "Supplier_Brand")" class=" btn btn-rounded blue"><i class="fas fa-plus"></i>&nbsp; Aggiungi</a>
 
                     </div>
                 </form>

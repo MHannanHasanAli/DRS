@@ -15,7 +15,7 @@
 </style>
 <div class="card">
     <div class="card-body">
-        @using (Html.BeginForm("Import", "Order", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("Import", "Brand", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.Raw(ViewBag.Error)
             <br />
@@ -26,7 +26,7 @@
                     </span>
                 </div>
                 <div>
-                    <a class="btn btn-success mover" href="@Url.Action("DownloadFile", "Shared", new { path = "~/Content/DemoFiles/OrdersDemoImport.xlsx" })">
+                    <a class="btn btn-success mover" href="@Url.Action("DownloadFile", "Shared", new { path = "~/Content/DemoFiles/BrandsDemoImport.xlsx" })">
                         <i class="fa fa-download" aria-hidden="true"></i>Demo File
                     </a>
                 </div>
@@ -37,15 +37,15 @@
             <input class="btn btn-block btn-outline-primary" type="submit" value="Import" />
             <br />
         }
-        <a class="btn btn-block btn-outline-success" href="@Url.Action("Index","Order")">Back to Order Monitor</a>
+        <a class="btn btn-block btn-outline-success" href="@Url.Action("Index","Brand")">Back to Brands</a>
 
 
         @if (ViewBag.Products != null)
         {
-            <table class="table table-responsive" cellpadding="2" cellspacing="2" border="1">
+            <table class="table table-responsive" cellpadding="2" cellspacing="2" bBrand="1">
                 <tr>
                     <th>
-                        Order
+                        Brand
                     </th>
                     <th>
                         Status
