@@ -3,8 +3,8 @@
     ViewBag.Title = "Register";
 }
 <style>
-    label{
-        color:black;
+    label {
+        color: black;
     }
 
     #modalregister {
@@ -23,11 +23,32 @@
     </div>
 
     <div class="modal-body">
+
         @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
 
         <div class="row">
+            @*<div class="form-group col-md-12">
+                <label>Product Image</label>
+
+               
+            </div>*@
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Image</label>
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+
+                        <input class="form-control" @*value="@Model.Image"*@ name="Logo" id="_Photo" type="hidden" />
+                        <input class="form-control" id="PhotoUpload" name="PhotoUpload" type="file" accept=".png, .jpg, .jpeg" />
+                       
+        <div class="thumb">
+            <img style="height:100px; width:100px" class="img-thumbnail img-fluid" id="PhotoImg" />
+        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Name</label>
@@ -44,22 +65,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Branch</label>
-                    <div class="col-sm-9">
-                        @Html.TextBoxFor(m => m.Branch, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            @*<div class="col-md-12">
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Email</label>
-                    <div class="col-sm-9">
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>*@
         </div>
             <div class="row">
                 <div class="col-md-12">
@@ -96,18 +101,18 @@
                     </div>
                 </div>
             </div>
-            @*<div class="row">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Contact</label>
+                        <label class="col-sm-3 col-form-label">Branch</label>
                         <div class="col-sm-9">
-                            @Html.TextBoxFor(m => m.Contact, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.Branch, new { @class = "form-control" })
                         </div>
 
 
                     </div>
                 </div>
-            </div>*@
+            </div>
 
             <input type="submit" style="color:white;" class="btn btn-rounded btn-block btn-inverse-dark btn-fw" value="Register" />
 
@@ -116,6 +121,39 @@
 
     </div>
 </div>
-   
+<script>
+     $("#PhotoUpload").change(function () {
+        var element = this;
+        var formData = new FormData();
 
+        var totalFiles = element.files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadPhotos", "Shared")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+
+                console.log(response);
+                if (response.Success) {
+                    $("#_Photo").val(response.DocURL);
+                    $("#PhotoImg").attr("src", response.DocURL);
+
+                }
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            })
+    });
+</script>
 

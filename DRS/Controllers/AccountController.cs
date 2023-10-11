@@ -179,13 +179,14 @@ namespace DRS.Controllers
 
         //
         // POST: /Account/Register
-        [HttpPost]
+         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            
+            if (ModelState.IsValid)
+            {
                 var role = await RolesManager.FindByIdAsync(model.RoleID);
-                var user = new User { Branch = model.Branch, Surname = model.Surname, Name = model.Name, Role = role.Name, Password = model.Password };
+                var user = new User { UserName = model.Name,Email = model.Name + "@DRS.com",Surname = model.Surname,Branch = model.Branch, Name = model.Name, Role = role.Name, Password = model.Password };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -203,12 +204,11 @@ namespace DRS.Controllers
                     return RedirectToAction("Index", "User");
                 }
                 AddErrors(result);
-            
+            }
 
             // If we got this far, something failed, redisplay form
             return RedirectToAction("Index", "User");
         }
-
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]

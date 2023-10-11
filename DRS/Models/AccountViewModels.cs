@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DRS.Models
 {
+
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
@@ -54,7 +55,7 @@ namespace DRS.Models
         [EmailAddress]
         public string Email { get; set; }
 
-   
+
 
 
         [Required]
@@ -68,7 +69,6 @@ namespace DRS.Models
 
     public class RegisterViewModel
     {
-        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -89,19 +89,14 @@ namespace DRS.Models
         public string Name { get; set; }
 
         [Display(Name = "Surname")]
-        [Required]
         public string Surname { get; set; }
 
         [Display(Name = "Branch")]
-        [Required]
         public string Branch { get; set; }
-
         [Display(Name = "Image")]
-        [Required]
         public string Image { get; set; }
 
         [Display(Name = "Contact")]
-        [Required]
         [DataType(DataType.PhoneNumber)]
         public string Contact { get; set; }
 
