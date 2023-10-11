@@ -100,6 +100,7 @@ namespace DRS.Controllers
                 var user = await UserManager.FindByIdAsync(ID);
                 model.ID = user.Id;
                 model.Name = user.Name;
+                model.Image = user.Image;
                 //model.Contact = user.PhoneNumber;
                 //model.Email = user.Email;
                 model.Surname = user.Surname;
@@ -126,6 +127,7 @@ namespace DRS.Controllers
                 user.Name = model.Name;
                 user.Surname = model.Surname;
                 user.Branch = model.Branch;
+                user.Image = model.Image;
                 //user.PhoneNumber = model.Contact;
                 //user.Email = model.Email;
                 user.Role = model.Role;
@@ -140,6 +142,8 @@ namespace DRS.Controllers
                 User.Name = model.Name;
                 User.Surname = model.Surname;
                 User.Branch = model.Branch;
+                User.Image = model.Image;
+
                 //User.PhoneNumber = model.Contact;
                 //User.Email = model.Email;
                 User.Password = model.Password;

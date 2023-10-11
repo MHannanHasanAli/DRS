@@ -28,6 +28,7 @@ namespace DRS.ViewModels
         //public string UserName { get; set; }
         //public string Contact { get; set; }
         public string Password { get; set; }
+        public string Image { get; set; }
         public List<IdentityRole> Roles { get; set; }
 
     }

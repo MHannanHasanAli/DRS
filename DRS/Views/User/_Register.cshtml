@@ -38,9 +38,9 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Image</label>
                     <div class="col-sm-9">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+@Html.TextBoxFor(m => m.Image, new { @class = "form-control", @id = "_Photo", type = "hidden" })
 
-                        <input class="form-control" @*value="@Model.Image"*@ name="Logo" id="_Photo" type="hidden" />
+                        <!--<input class="form-control"--> @*value="@Model.Image"*@ <!--name="Logo" id="_Photo" type="hidden" />-->
                         <input class="form-control" id="PhotoUpload" name="PhotoUpload" type="file" accept=".png, .jpg, .jpeg" />
                        
         <div class="thumb">

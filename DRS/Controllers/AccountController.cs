@@ -186,7 +186,7 @@ namespace DRS.Controllers
             if (ModelState.IsValid)
             {
                 var role = await RolesManager.FindByIdAsync(model.RoleID);
-                var user = new User { UserName = model.Name,Email = model.Name + "@DRS.com",Surname = model.Surname,Branch = model.Branch, Name = model.Name, Role = role.Name, Password = model.Password };
+                var user = new User { UserName = model.Name,Email = model.Name + "@DRS.com",Surname = model.Surname,Branch = model.Branch, Name = model.Name, Role = role.Name, Password = model.Password, Image = model.Image };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
