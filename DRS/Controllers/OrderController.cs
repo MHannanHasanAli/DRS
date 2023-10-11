@@ -369,12 +369,49 @@ namespace DRS.Controllers
                 OrderServices.Instance.CreateOrder(Order);
 
             }
+            //if(model.IDSupplier != 0)
+            //{
+            //    var supplier = SupplierServices.Instance.GetSupplierById(model.IDSupplier);
+            //    if (supplier.Contact == "Telephone")
+            //    {
+            //        OrderActionViewModel data = new OrderActionViewModel();
+            //        data.ID = 1;
+            //        data.Note = supplier.Contact;
+            //        data.Plate = supplier.Telephone;
+            //        return PartialView("_Confirmation", model);
+            //    }
+            //    else if (supplier.Contact == "Whatsapp")
+            //    {
+            //        OrderActionViewModel data = new OrderActionViewModel();
+            //        data.ID = 1;
+            //        data.Note = supplier.Contact;
+            //        data.Plate = supplier.Whatsapp;
+            //        return PartialView("_Confirmation", model);
+            //    }
+            //    else
+            //    {
 
+            //    }
+            //}
+            
 
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetSupplierInfo(int supplierId)
+        {
+            // Replace this with your actual data retrieval logic
+            var supplierInfo = SupplierServices.Instance.GetSupplierById(supplierId);
 
-
+            return Json(supplierInfo, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult Confirmation(int ID)
+        {
+            OrderActionViewModel model = new OrderActionViewModel();
+            var Order = OrderServices.Instance.GetOrderById(ID);
+            model.ID = Order.ID;
+            return PartialView("_Confirmation", model);
+        }
 
         [HttpGet]
         public ActionResult Delete(int ID)

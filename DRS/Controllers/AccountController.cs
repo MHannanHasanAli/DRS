@@ -183,8 +183,7 @@ namespace DRS.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+            
                 var role = await RolesManager.FindByIdAsync(model.RoleID);
                 var user = new User { Branch = model.Branch, Surname = model.Surname, Name = model.Name, Role = role.Name, Password = model.Password };
 
@@ -204,7 +203,7 @@ namespace DRS.Controllers
                     return RedirectToAction("Index", "User");
                 }
                 AddErrors(result);
-            }
+            
 
             // If we got this far, something failed, redisplay form
             return RedirectToAction("Index", "User");
