@@ -177,7 +177,28 @@ namespace DRS.Controllers
             return View(model);
         }
 
-        //
+        public async Task<ActionResult> UserSaver(RegisterViewModel model)
+        {
+            var role = await RolesManager.FindByIdAsync(model.RoleID);
+            var user = new User { UserName = model.Name, Email = model.Name + "@DRS.com", Surname = model.Surname, Branch = model.Branch, Name = model.Name, Role = role.Name, Password = model.Password, Image = model.Image };
+
+            var result = await UserManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                await UserManager.AddToRoleAsync(user.Id, role.Name);
+                //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                // Send an email with this link
+                // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+
+                return RedirectToAction("Index", "User");
+            }
+            return RedirectToAction("Index", "User");
+        }
         // POST: /Account/Register
          [HttpPost]
         [AllowAnonymous]

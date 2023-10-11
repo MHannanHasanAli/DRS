@@ -10,6 +10,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using OfficeOpenXml;
+using Microsoft.AspNet.Identity.EntityFramework;
+using OfficeOpenXml.Sorting;
 
 namespace DRS.Controllers
 {
@@ -64,10 +67,209 @@ namespace DRS.Controllers
         // GET: User
         public ActionResult Index(string searchterm)
         {
+            Session["ACTIVER"] = "User";
+
             UsersListingViewModel model = new UsersListingViewModel();
             model.Users = SearchUsers(searchterm);
             model.Roles = RolesManager.Roles.ToList();
             return View(model);
+        }
+        public ActionResult ExportToExcel()
+        {
+
+            var users = UserManager.Users.AsQueryable();
+
+
+            System.Data.DataTable tableData = new System.Data.DataTable();
+            tableData.Columns.Add("ID", typeof(string)); // Replace "Column1" with the actual column name
+            tableData.Columns.Add("Name", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Surname", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Branch", typeof(string)); // Replace "Column2" with the actual column nam
+            tableData.Columns.Add("Profile", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Password", typeof(string)); // Replace "Column2" with the actual column name
+
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            foreach (var item in users)
+            {
+                System.Data.DataRow row = tableData.NewRow();
+                row["ID"] = item.Id;
+                row["Name"] = item.Name;
+                row["Surname"] = item.Surname;
+                row["Branch"] = item.Branch;
+                row["Profile"] = item.Role;
+                row["Password"] = item.Password;
+
+                tableData.Rows.Add(row);
+            }
+
+
+
+
+
+            // Create the Excel package
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                // Create a new worksheet
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Products");
+
+                // Set the column names
+                for (int i = 0; i < tableData.Columns.Count; i++)
+                {
+                    worksheet.Cells[1, i + 1].Value = tableData.Columns[i].ColumnName;
+                }
+
+                // Set the row data
+                for (int row = 0; row < tableData.Rows.Count; row++)
+                {
+                    for (int col = 0; col < tableData.Columns.Count; col++)
+                    {
+                        worksheet.Cells[row + 2, col + 1].Value = tableData.Rows[row][col];
+                    }
+                }
+
+                // Auto-fit columns for better readability
+                worksheet.Cells.AutoFitColumns();
+
+                // Convert the Excel package to a byte array
+                byte[] excelBytes = package.GetAsByteArray();
+
+                // Return the Excel file as a downloadable file
+                return File(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Users.xlsx");
+            }
+        }
+        [HttpGet]
+        public ActionResult Import()
+        {
+            Session["ACTIVER"] = "User Import";
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase excelfile)
+        {
+            if (excelfile == null || excelfile.ContentLength == 0)
+            {
+                ViewBag.Error = "Please Select Excel File";
+                return View();
+            }
+            else
+            {
+                var items = new List<RegisterViewModel>();
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // or LicenseContext.Commercial
+
+                if (excelfile != null && excelfile.ContentLength > 0)
+                {
+                    using (var package = new ExcelPackage(excelfile.InputStream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        var rowCount = worksheet.Dimension.Rows;
+
+                        var rolesList = RolesManager.Roles.ToList();
+                        for (int row = 2; row <= rowCount; row++) // Assuming the first row is header
+                        {
+
+                            RegisterViewModel user = new RegisterViewModel();
+
+                            if (worksheet.Cells[row, 1].Value == null || worksheet.Cells[row, 2].Value == null || worksheet.Cells[row, 3].Value == null || worksheet.Cells[row, 4].Value == null || worksheet.Cells[row, 5].Value == null)
+                            {
+                                continue;
+                            }
+
+                            if (worksheet.Cells[row, 1].Value != null)
+                            {
+                                user.Name = worksheet.Cells[row, 1].Value.ToString();
+                            }
+
+                            //ProductName
+                            if (worksheet.Cells[row, 2].Value != null)
+                            {
+                                user.Surname = worksheet.Cells[row, 2].Value.ToString();
+                            }
+                      
+
+                            if (worksheet.Cells[row, 3].Value != null)
+                            {
+                                user.Branch = worksheet.Cells[row, 3].Value.ToString();
+                            }
+                            
+                            if (worksheet.Cells[row, 4].Value != null)
+                            {
+                                string roleName = worksheet.Cells[row, 4].Value.ToString();
+
+                                var role = rolesList.FirstOrDefault(r => r.Name == roleName);
+                                if (role != null)
+                                {
+                                    user.RoleID = role.Id;
+                                    user.Address = role.Name;
+                                }
+
+                            }
+                           
+                            if (worksheet.Cells[row, 5].Value != null)
+                            {
+                                user.Password = worksheet.Cells[row, 5].Value.ToString();
+                            }
+                           
+
+                            items.Add(user);
+                            
+                        }
+                        foreach (var item in items)
+                        {
+                            UserSaver(item, item.Address);
+                        }
+                    }
+                    ViewBag.Products = items;
+                    return View();
+
+                }
+
+
+
+                else
+                {
+                    ViewBag.Error = "Incorrect File";
+
+                    return View();
+                }
+            }
+
+            //var Prcoess = Process.GetProcessesByName("EXCEL.EXE").FirstOrDefault();
+            //Prcoess.Kill();
+
+        }
+
+        public async Task UserSaver(RegisterViewModel model, string roleName)
+        {
+          
+                var role = await RolesManager.FindByNameAsync(roleName);
+                if (role == null)
+                {
+                    // Handle the case where the role does not exist.
+                    // You can create the role or handle the error accordingly.
+                }
+                else
+                {
+                    var user = new User { UserName = model.Name, Email = model.Name + "@DRS.com", Surname = model.Surname, Branch = model.Branch, Name = model.Name, Role = role.Name, Image = model.Image };
+
+                    var createResult = await UserManager.CreateAsync(user, model.Password);
+
+                    if (createResult.Succeeded)
+                    {
+                        var addToRoleResult = await UserManager.AddToRoleAsync(user.Id, role.Name);
+
+                        if (!addToRoleResult.Succeeded)
+                        {
+                            // Handle the error when adding the user to the role
+                        }
+                    }
+                    else
+                    {
+                        // Handle the error when creating the user
+                    }
+                }
+           
         }
 
         public IEnumerable<User> SearchUsers(string searchTerm)
@@ -94,6 +296,15 @@ namespace DRS.Controllers
         {
             UserActionModel model = new UserActionModel();
             model.Roles = RolesManager.Roles.ToList();
+            if (!string.IsNullOrEmpty(ID))
+            {
+                Session["ACTIVER"] = "User Edit";
+            }
+            else
+            {
+                Session["ACTIVER"] = "Add User";
+
+            }
 
             if (!string.IsNullOrEmpty(ID))
             {

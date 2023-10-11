@@ -101,14 +101,14 @@
                 </div>
             </div>
             <div style="background-color:white;" class="card-footer container-bottom">
-                <a href="@Url.Action("Index","Supplier")" class="btn btn-danger back"><i class="fas fa-times mr-1"></i> Cancel</a>
+                <a href="@Url.Action("Index","Supplier")" class="btn btn-danger back btn-rounded"><i class="fas fa-times mr-1"></i> Cancel</a>
                 @if (Model.ID != 0)
                 {
-                    <button id="actionButton" type="button" class="btn btn-success"><i class="fas fa-save mr-1"></i> Update</button>
+                    <button id="actionButton" type="button" class="btn btn-success btn-rounded"><i class="fas fa-save mr-1"></i> Update</button>
                 }
                 else
                 {
-                    <button id="actionButton" type="button" class="btn btn-success"><i class="fas fa-save mr-1"></i> Save</button>
+                    <button id="actionButton" type="button" class="btn btn-success btn-rounded"><i class="fas fa-save mr-1"></i> Save</button>
                 }
 
             </div>

@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Products Management</title>
+    <title>DRS</title>
 
 
     <!-- endinject -->
@@ -295,6 +295,18 @@
             }
             if (data == "Supplier/Brand Import") {
                 $('#Main-title').text("Import Supplier/Brands");
+            }
+            if (data == "User") {
+                $('#Main-title').text("User Monitor");
+            }
+            if (data == "User Edit") {
+                $('#Main-title').text("User Modifica");
+            }
+            if (data == "Add User") {
+                $('#Main-title').text("New User");
+            }
+            if (data == "User Import") {
+                $('#Main-title').text("Import Users");
             }
         })
         function showLoadingSpinner() {

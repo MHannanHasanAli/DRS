@@ -15,17 +15,27 @@
                             <tr>
 
                                 <th>
+                                    Image
+                                </th>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
                                     Name
-                                </th>
-                                <th>
-                                    Email
-                                </th>
-                                <th>
-                                    Contact
                                 </th>
 
                                 <th>
-                                    Action
+                                    Surname
+                                </th>
+                                <th>
+                                    Branch
+                                </th>
+                                <th>
+                                    Profile
+                                </th>
+
+                                <th>
+                                    Password
                                 </th>
                             </tr>
                         </thead>
@@ -33,13 +43,33 @@
                             @foreach (var item in Model.Users)
                             {
                                 <tr>
-                                    <td>@item.Name</td>
-                                    <td>@item.Email</td>
-                                    <td>@item.PhoneNumber</td>
                                     <td>
-                                        <button data-href="@Url.Action("Action", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-info btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-pencil"></i> EDIT</button>
-                                        <button data-href="@Url.Action("Delete", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-danger btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>
-                                        <button data-href="@Url.Action("UserRoles", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-success btn-icon-text" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-account-details"></i>ROLES</button>
+                                        @if (item.Image != null)
+                                        {
+                                            <img style="height:50px; width:50px;" src="@item.Image" />
+
+                                        }
+                                        else
+                                        {
+                                            <img style="height:50px; width:50px;" src="~/Content/DRS Content/Images/download.png" />
+
+                                        }
+                                    </td>
+                                    <td>@item.Id</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Surname</td>
+                                    <td>@item.Branch</td>
+                                    <td>@item.Role</td>
+                                    <td>
+                                    @if (item.Password != null)
+                                    {
+                                        <h4>********</h4>
+                                    }
+                                    </td>
+                                    <td>
+                                        <button data-href="@Url.Action("Action", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-info btn-icon-text btn-rounded" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-pencil"></i> EDIT</button>
+                                        <button data-href="@Url.Action("Delete", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-danger btn-icon-text btn-rounded" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>
+                                        <button data-href="@Url.Action("UserRoles", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-success btn-icon-text btn-rounded" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-account-details"></i>ROLES</button>
 
                                     </td>
                                 </tr>

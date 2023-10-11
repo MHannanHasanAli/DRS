@@ -40,7 +40,6 @@
     <div class="card">
         <div class="card-body">
            
-            <div class="container">
                 <form id="actionForm">
                     <div class="form-container">
                         <input value="@Model.ID" type="hidden" class="form-control" name="ID" id="ID" />
@@ -73,16 +72,16 @@
                             {
                                 if (Model.Default == "on")
                                 {
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-1">
                                         <label for="Default">Default&nbsp;</label>
-                                        <input type="checkbox" class="form-control" name="Default" id="Default" checked="checked" />
+                                        <input type="checkbox" class="form-control" name="Default" id="Default" checked="checked" style="width: 10px; height: 10px; padding: 0;"/>
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-1">
                                         <label for="Default">Default&nbsp;</label>
-                                        <input type="checkbox" class="form-control" name="Default" id="Default" />
+                                        <input type="checkbox" class="form-control" name="Default" id="Default" style="width: 10px; height: 10px; padding: 0;"/>
                                     </div>
                                 }
 
@@ -112,16 +111,16 @@
                 <div class="errorDiv">
 
                 </div>
-            </div>
+           
             <div style="background-color:white;" class="card-footer container-bottom">
-                <a href="@Url.Action("Index","Supplier_Brand")" class="btn btn-danger back"><i class="fas fa-times mr-1"></i> Cancel</a>
+                <a href="@Url.Action("Index","Supplier_Brand")" class="btn btn-danger back btn-rounded"><i class="fas fa-times mr-1"></i> Cancel</a>
                 @if (Model.ID != 0)
                 {
-                    <button id="actionButton" type="button" class="btn btn-success"><i class="fas fa-save mr-1"></i> Update</button>
+                    <button id="actionButton" type="button" class="btn btn-success btn-rounded"><i class="fas fa-save mr-1"></i> Update</button>
                 }
                 else
                 {
-                    <button id="actionButton" type="button" class="btn btn-success"><i class="fas fa-save mr-1"></i> Save</button>
+                    <button id="actionButton" type="button" class="btn btn-success btn-rounded"><i class="fas fa-save mr-1"></i> Save</button>
                 }
 
             </div>
