@@ -16,6 +16,7 @@ using OfficeOpenXml.Sorting;
 
 namespace DRS.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private AMSignInManager _signInManager;
@@ -197,11 +198,10 @@ namespace DRS.Controllers
                             {
                                 string roleName = worksheet.Cells[row, 4].Value.ToString();
 
-                                var role = rolesList.FirstOrDefault(r => r.Name == roleName);
-                                if (role != null)
+                                var RoleOfUser = rolesList.FirstOrDefault(r => r.Name == roleName);
+                                if (RoleOfUser != null)
                                 {
-                                    user.RoleID = role.Id;
-                                    user.Address = role.Name;
+                                    user.RoleID = RoleOfUser.Id;
                                 }
 
                             }
@@ -212,16 +212,21 @@ namespace DRS.Controllers
                             }
                            
 
-                            items.Add(user);
-                            
+                            var role = RolesManager.FindByIdAsync(user.RoleID);
+                            var UserToBeSaved = new User { UserName = user.Name, Email = user.Name + "@DRS.com", Surname = user.Surname, Branch = user.Branch, Name = user.Name, Role = role.Result.Name, Password = user.Password, Image = user.Image };
+                            var rolesAll = rolesList.Select(x => x.Id).ToList();
+                            if (rolesAll.Contains(UserToBeSaved.Role))
+                            {
+                                UserManager.CreateAsync(UserToBeSaved, user.Password);
+
+                                UserManager.AddToRoleAsync(UserToBeSaved.Id, role.Result.Name);
+                                items.Add(user);
+                            }
                         }
-                        foreach (var item in items)
-                        {
-                            UserSaver(item, item.Address);
-                        }
+                       
                     }
                     ViewBag.Products = items;
-                    return View();
+                    return RedirectToAction("Index","User");
 
                 }
 
@@ -240,37 +245,7 @@ namespace DRS.Controllers
 
         }
 
-        public async Task UserSaver(RegisterViewModel model, string roleName)
-        {
-          
-                var role = await RolesManager.FindByNameAsync(roleName);
-                if (role == null)
-                {
-                    // Handle the case where the role does not exist.
-                    // You can create the role or handle the error accordingly.
-                }
-                else
-                {
-                    var user = new User { UserName = model.Name, Email = model.Name + "@DRS.com", Surname = model.Surname, Branch = model.Branch, Name = model.Name, Role = role.Name, Image = model.Image };
-
-                    var createResult = await UserManager.CreateAsync(user, model.Password);
-
-                    if (createResult.Succeeded)
-                    {
-                        var addToRoleResult = await UserManager.AddToRoleAsync(user.Id, role.Name);
-
-                        if (!addToRoleResult.Succeeded)
-                        {
-                            // Handle the error when adding the user to the role
-                        }
-                    }
-                    else
-                    {
-                        // Handle the error when creating the user
-                    }
-                }
-           
-        }
+      
 
         public IEnumerable<User> SearchUsers(string searchTerm)
         {
@@ -281,6 +256,7 @@ namespace DRS.Controllers
                 users = users.Where(a => a.Email.ToLower().Contains(searchTerm.ToLower()));
             }
 
+            users.OrderBy(b => b.Name);
 
             return users;
         }

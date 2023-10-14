@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="~/Content/template/vendors/typicons/typicons.css">
     <link rel="stylesheet" href="~/Content/template/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="~/Content/template/vendors/mdi/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
     <!-- endinject -->
     <!-- plugin css for this page -->
@@ -34,6 +35,11 @@
 </head>
 <body>
     <style>
+        .table th, .table td {
+            padding: 0.7rem 0.9375rem;
+            vertical-align: top;
+            border-top: 1px solid #f3f3f3;
+        }
         .body {
             background-color: #F69601;
         }
@@ -83,7 +89,7 @@
               <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                         <span class="typcn typcn-th-menu"></span>
                     </button>
-                    <img src="~/Content/Logo/logo.png" width="150px" height="50px" />
+                    <img src="~/Content/Logo/logo_min.png" width="150px" height="50px" />
                 </div>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -126,61 +132,103 @@
 
                     @*<li class="nav-item">
 
-                        <a class="nav-link" href="@Url.Action("", "")">
-                            <i class="typcn typcn-device-desktop menu-icon"></i>
-                            <span class="menu-title">Home</span>
-                        </a>
-                    </li>*@
+            <a class="nav-link" href="@Url.Action("", "")">
+                <i class="typcn typcn-device-desktop menu-icon"></i>
+                <span class="menu-title">Home</span>
+            </a>
+        </li>*@
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
 
-                    <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Customer")">
+                                <i class="typcn typcn-user menu-icon"></i>
+                                <span class="menu-title">Clienti</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
 
-                        <a class="nav-link" href="@Url.Action("Index", "Customer")">
-                            <i class="typcn typcn-user menu-icon"></i>
-                            <span class="menu-title">Customer</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Supplier")">
+                                <i class="typcn typcn-user menu-icon"></i>
+                                <span class="menu-title">Fornitori</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
 
-                        <a class="nav-link" href="@Url.Action("Index", "Supplier")">
-                            <i class="typcn typcn-user menu-icon"></i>
-                            <span class="menu-title">Supplier</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Brand")">
+                                <i class="typcn typcn-briefcase menu-icon"></i>
+                                <span class="menu-title">Marca</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
 
-                        <a class="nav-link" href="@Url.Action("Index", "Brand")">
-                            <i class="typcn typcn-briefcase menu-icon"></i>
-                            <span class="menu-title">Brand</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Branch")">
+                                <i class="typcn typcn-business-card menu-icon"></i>
+                                <span class="menu-title">Filiali</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
 
-                        <a class="nav-link" href="@Url.Action("Index", "Branch")">
-                            <i class="typcn typcn-business-card menu-icon"></i>
-                            <span class="menu-title">Branch</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Supplier_Brand")">
+                                <i class="typcn typcn-clipboard menu-icon"></i>
+                                <span class="menu-title">Fornitori/Marca</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
 
-                        <a class="nav-link" href="@Url.Action("Index", "Supplier_Brand")">
-                            <i class="typcn typcn-clipboard menu-icon"></i>
-                            <span class="menu-title">Supplier/Brand</span>
-                        </a>
-                    </li>
-                    @*<li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "User")">
+                                <i class="typcn typcn-user menu-icon"></i>
+                                <span class="menu-title">Utenti</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
 
-                        <a class="nav-link" href="@Url.Action("Action", "Order")">
-                            <i class="typcn typcn menu-icon"></i>
-                            <span class="menu-title">Order</span>
-                        </a>
-                    </li>*@
-                    <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Order")">
+                                <i class="typcn typcn-device-desktop menu-icon"></i>
+                                <span class="menu-title">Order Monitor</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
 
-                        <a class="nav-link" href="@Url.Action("Index", "Order")">
-                            <i class="typcn typcn-device-desktop menu-icon"></i>
-                            <span class="menu-title">Order Monitor</span>
-                        </a>
-                    </li>
+                            <a class="nav-link" href="@Url.Action("ReceivedOrders", "Order")">
+                                <i class="typcn typcn-tick-outline menu-icon"></i>
+                                <span class="menu-title">Ricevuto Order</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="@Url.Action("ConfirmedOrders", "Order")">
+                                <i class="typcn typcn-tick menu-icon"></i>
+                                <span class="menu-title">Confermato Order</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="@Url.Action("Logout", "Account")">
+                                <i class="typcn typcn-arrow-left menu-icon"></i>
+                                <span class="menu-title">Logout</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="@Url.Action("ReceivedOrders", "Order")">
+                                <i class="typcn typcn-tick-outline menu-icon"></i>
+                                <span class="menu-title">Ricevuto Order</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="@Url.Action("Logout", "Account")">
+                                <i class="typcn typcn-arrow-left menu-icon"></i>
+                                <span class="menu-title">Logout</span>
+                            </a>
+                        </li>
+                    }
+
+
                 </ul>
 
             </nav>
@@ -231,82 +279,88 @@
                 $('#Main-title').text("Order Modifica");
             }
             if (data == "Add Order") {
-                $('#Main-title').text("New Order");
+                $('#Main-title').text("Nuovo Order");
             }
             if (data == "Order Import") {
                 $('#Main-title').text("Import Orders");
             }
+            if (data == "Ricevuto Order") {
+                $('#Main-title').text("Ricevuto Order");
+            }
+            if (data == "Confirmed Order") {
+                $('#Main-title').text("Confermato Order");
+            }
             if (data == "Customer") {
-                $('#Main-title').text("Customer Monitor");
+                $('#Main-title').text("Cliente");
             }
             if (data == "Customer Edit") {
-                $('#Main-title').text("Customer Modifica");
+                $('#Main-title').text("Cliente Modifica");
             }
             if (data == "Add Customer") {
-                $('#Main-title').text("New Customer");
+                $('#Main-title').text("Nuovo Cliente");
             }
             if (data == "Customer Import") {
-                $('#Main-title').text("Import Customers");
+                $('#Main-title').text("Import Cliente");
             }
             if (data == "Supplier") {
-                $('#Main-title').text("Supplier Monitor");
+                $('#Main-title').text("Fornitori");
             }
             if (data == "Supplier Edit") {
-                $('#Main-title').text("Supplier Modifica");
+                $('#Main-title').text("Fornitori Modifica");
             }
             if (data == "Add Supplier") {
-                $('#Main-title').text("New Supplier");
+                $('#Main-title').text("Nuovo Fornitori");
             }
             if (data == "Supplier Import") {
-                $('#Main-title').text("Import Suppliers");
+                $('#Main-title').text("Import Fornitori");
             }
             if (data == "Brand") {
-                $('#Main-title').text("Brand Monitor");
+                $('#Main-title').text("Marca");
             }
             if (data == "Brand Edit") {
-                $('#Main-title').text("Brand Modifica");
+                $('#Main-title').text("Marca Modifica");
             }
             if (data == "Add Brand") {
-                $('#Main-title').text("New Brand");
+                $('#Main-title').text("Nuovo Marca");
             }
             if (data == "Brand Import") {
-                $('#Main-title').text("Import Brands");
+                $('#Main-title').text("Import Marca");
             }
             if (data == "Branch") {
-                $('#Main-title').text("Branch Monitor");
+                $('#Main-title').text("Filiale");
             }
             if (data == "Branch Edit") {
-                $('#Main-title').text("Branch Modifica");
+                $('#Main-title').text("Filiale Modifica");
             }
             if (data == "Add Branch") {
-                $('#Main-title').text("New Branch");
+                $('#Main-title').text("Nuovo Filiale");
             }
             if (data == "Branch Import") {
-                $('#Main-title').text("Import Branches");
+                $('#Main-title').text("Import Filiale");
             }
             if (data == "Supplier/Brand") {
-                $('#Main-title').text("Supplier/Brand Monitor");
+                $('#Main-title').text("Fornitori/Marca Monitor");
             }
             if (data == "Supplier/Brand Edit") {
-                $('#Main-title').text("Supplier/Brand Modifica");
+                $('#Main-title').text("Fornitori/Marca Modifica");
             }
             if (data == "Add Supplier/Brand") {
-                $('#Main-title').text("New Supplier/Brand");
+                $('#Main-title').text("Nuovo Fornitori/Marca");
             }
             if (data == "Supplier/Brand Import") {
-                $('#Main-title').text("Import Supplier/Brands");
+                $('#Main-title').text("Import Fornitori/Marca");
             }
             if (data == "User") {
-                $('#Main-title').text("User Monitor");
+                $('#Main-title').text("Utenti");
             }
             if (data == "User Edit") {
-                $('#Main-title').text("User Modifica");
+                $('#Main-title').text("Utenti Modifica");
             }
             if (data == "Add User") {
-                $('#Main-title').text("New User");
+                $('#Main-title').text("Nuovo Utenti");
             }
             if (data == "User Import") {
-                $('#Main-title').text("Import Users");
+                $('#Main-title').text("Import Utenti");
             }
         })
         function showLoadingSpinner() {

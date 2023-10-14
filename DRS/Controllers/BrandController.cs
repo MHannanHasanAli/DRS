@@ -11,6 +11,7 @@ using OfficeOpenXml;
 
 namespace DRS.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class BrandController : Controller
     {
         // GET: Brand

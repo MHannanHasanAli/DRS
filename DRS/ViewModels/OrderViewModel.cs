@@ -38,6 +38,7 @@ namespace DRS.ViewModels
         public string AlternativeCode { get; set; }
         public string Alias{ get; set; }
         public int? Unavailability { get; set; }
+        public string Photo { get; set; }
 
         public string Received { get; set; }
     }
@@ -69,6 +70,8 @@ namespace DRS.ViewModels
         public string Description { get; set; }
         public int Quantity { get; set; }
         public string NoteItem { get; set; }
+        public string Photo { get; set; }
+
     }
 
     public class OrderProductModel

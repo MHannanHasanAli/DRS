@@ -11,6 +11,7 @@ using OfficeOpenXml;
 
 namespace DRS.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class BranchController : Controller
     {
         // GET: Branch

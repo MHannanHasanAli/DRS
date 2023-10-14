@@ -81,15 +81,16 @@
                         <div class="card col-md-12">
 
                             <!-- /.card-header -->
-                            <div class="card-body">
+                            <div class="card-body table-responsive">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Actions</th>
+                                            <th>Azioni</th>
                                             <th>Logo</th>
-                                            <th>Description</th>
+                                            <th>Descrizione</th>
                                             <th>Alias</th>
-                                            <th>Telephone</th>
+                                            <th>Erp</th>
+                                            <th>Telephono</th>
                                             <th>Whatsapp</th>
                                             <th>Email</th>
                                             <th>Note</th>
@@ -131,16 +132,17 @@
                                                 </td>
                                                 <td>@item.Description</td>
                                                 <td>@item.Alias</td>
+                                                <td>@item.Erp</td>
                                                 <td>@item.Telephone</td>
                                                 <td>@item.Whatsapp</td>
                                                 <td>@item.Email</td>
                                                 <td>@item.Note</td>
                                                 @*<td>@item._File</td>*@
                                                 @*<td>
-                                                        <a class="btn" href="@Url.Action("DownloadFile", "Shared", new { path = item._File })">
-                                                            <i class="fa fa-download" aria-hidden="true"></i>
-                                                        </a>
-                                                    </td>*@
+            <a class="btn" href="@Url.Action("DownloadFile", "Shared", new { path = item._File })">
+                <i class="fa fa-download" aria-hidden="true"></i>
+            </a>
+        </td>*@
                                             </tr>
                                         }
                                     </tbody>

@@ -18,6 +18,7 @@ using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace DRS.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private AMSignInManager _signInManager;
@@ -162,6 +163,8 @@ namespace DRS.Controllers
                 }
                 else
                 {
+                    var user = UserManager.FindById(User.Identity.GetUserId());
+
                     var Order = new Entities.Order();
                     Order.IDBranch = LastOrder.IDBranch;
                     Order.IDCustomer = LastOrder.IDCustomer;
@@ -170,7 +173,7 @@ namespace DRS.Controllers
                     Order.Note = LastOrder.Note;
                     Order.Plate = LastOrder.Plate;
                     Order.Chassis = LastOrder.Chassis;
-                    //Order.IDUser = user.Name;
+                    Order.IDUser = user.Name;
                     Order.Date = DateTime.Now;
                     Order.Unavailability = CalculateDaysBetweenDates(Order.Date);
                     OrderServices.Instance.CreateOrder(Order);
@@ -251,7 +254,9 @@ namespace DRS.Controllers
                             Attachment = order.Attachment,
                             AlternativeCode = order.AlternativeCode,
                             Unavailability = CalculateDaysBetweenDates(order.Date),
-                            Received = order.Received
+                            Received = order.Received,
+                            User = order.IDUser,
+                            Photo = order.File
                     };
 
                         if (model.Order == null)
@@ -266,7 +271,137 @@ namespace DRS.Controllers
 
             return View("Index", model);
         }
+        public ActionResult ReceivedOrders()
+        {
+            Session["ACTIVER"] = "Ricevuto Order";
+            OrderListingViewModel model = new OrderListingViewModel();
 
+            var AllOrders = OrderServices.Instance.GetReceivedOrders();
+            var AllItems = Order_ItemServices.Instance.GetOrder_Items();
+
+            foreach (var order in AllOrders)
+            {
+                foreach (var item in AllItems)
+                {
+                    if (order.ID == item.IDOrder)
+                    {
+                        var Supplier = SupplierServices.Instance.GetSupplierById(order.IDSupplier);
+                        var Customer = CustomerServices.Instance.GetCustomerById(order.IDCustomer);
+                        var Branch = BranchServices.Instance.GetBranchById(order.IDBranch);
+                        var Brand = BrandServices.Instance.GetBrandById(order.IDBrand);
+                        var user = UserManager.FindById(order.IDUser);
+                        if (order.Received == null)
+                        {
+                            order.Received = "off";
+                        }
+                        var modelfiller = new OrderIndex
+                        {
+                            Supplier = Supplier?.Description,
+                            Customer = Customer?.Description,
+                            Alias = Customer?.Alias,
+                            Branch = Branch?.Description,
+                            Brand = Brand?.Description,
+                            // User = user?.Name, // Uncomment this line when needed
+                            Chassis = order.Chassis,
+                            Plate = order.Plate,
+                            Note = order.Note,
+                            Date = order.Date,
+                            DeliveryDate = order.DeliveryDate,
+                            Reminder1 = order.Reminder1,
+                            Reminder2 = order.Reminder2,
+                            Reminder3 = order.Reminder3,
+                            IDOrder = order.ID,
+                            IDItem = item.ID,
+                            ItemCode = item.ItemCode,
+                            Description = item.Description,
+                            Quantity = item.Quantity,
+                            NoteItem = item.Note,
+                            Attachment = order.Attachment,
+                            AlternativeCode = order.AlternativeCode,
+                            Unavailability = CalculateDaysBetweenDates(order.Date),
+                            Received = order.Received,
+                            User = order.IDUser,
+                            Photo = order.File
+                        };
+
+                        if (model.Order == null)
+                        {
+                            model.Order = new List<OrderIndex>();
+                        }
+
+                        model.Order.Add(modelfiller);
+                    }
+                }
+            }
+
+            return View("ReceivedOrders", model);
+        }
+
+        public ActionResult ConfirmedOrders()
+        {
+            Session["ACTIVER"] = "Confirmed Order";
+            OrderListingViewModel model = new OrderListingViewModel();
+
+            var AllOrders = OrderServices.Instance.GetConfirmedOrders();
+            var AllItems = Order_ItemServices.Instance.GetOrder_Items();
+
+            foreach (var order in AllOrders)
+            {
+                foreach (var item in AllItems)
+                {
+                    if (order.ID == item.IDOrder)
+                    {
+                        var Supplier = SupplierServices.Instance.GetSupplierById(order.IDSupplier);
+                        var Customer = CustomerServices.Instance.GetCustomerById(order.IDCustomer);
+                        var Branch = BranchServices.Instance.GetBranchById(order.IDBranch);
+                        var Brand = BrandServices.Instance.GetBrandById(order.IDBrand);
+                        var user = UserManager.FindById(order.IDUser);
+                        if (order.Received == null)
+                        {
+                            order.Received = "off";
+                        }
+                        var modelfiller = new OrderIndex
+                        {
+                            Supplier = Supplier?.Description,
+                            Customer = Customer?.Description,
+                            Alias = Customer?.Alias,
+                            Branch = Branch?.Description,
+                            Brand = Brand?.Description,
+                            // User = user?.Name, // Uncomment this line when needed
+                            Chassis = order.Chassis,
+                            Plate = order.Plate,
+                            Note = order.Note,
+                            Date = order.Date,
+                            DeliveryDate = order.DeliveryDate,
+                            Reminder1 = order.Reminder1,
+                            Reminder2 = order.Reminder2,
+                            Reminder3 = order.Reminder3,
+                            IDOrder = order.ID,
+                            IDItem = item.ID,
+                            ItemCode = item.ItemCode,
+                            Description = item.Description,
+                            Quantity = item.Quantity,
+                            NoteItem = item.Note,
+                            Attachment = order.Attachment,
+                            AlternativeCode = order.AlternativeCode,
+                            Unavailability = CalculateDaysBetweenDates(order.Date),
+                            Received = order.Received,
+                            User = order.IDUser,
+                            Photo = order.File
+                        };
+
+                        if (model.Order == null)
+                        {
+                            model.Order = new List<OrderIndex>();
+                        }
+
+                        model.Order.Add(modelfiller);
+                    }
+                }
+            }
+
+            return View("ConfirmedOrders", model);
+        }
         [HttpGet]
         public ActionResult Action(int ID = 0)
         {
@@ -294,6 +429,8 @@ namespace DRS.Controllers
                 model.Chassis = Order.Chassis;
                 model.IDUser = Order.IDUser;
                 model.Date = Order.Date;
+                model.Photo = Order.File;
+                
                 if(model.Date != null)
                 {
                     model.Unavailability = CalculateDaysBetweenDates(model.Date);
@@ -306,6 +443,7 @@ namespace DRS.Controllers
                 model.DeliveryDate = Order.DeliveryDate;
                 model.Received = Order.Received;
                 model.Attachment = Order.Attachment;
+                model.IDUser = Order.IDUser;
                 foreach (var item in OrderItem)
                 {
                     model.ItemCode = item.ItemCode;
@@ -320,6 +458,23 @@ namespace DRS.Controllers
             model.Brands = BrandServices.Instance.GetBrands();
 
             return View("Action", model);
+        }
+
+      
+        public ActionResult Confirm(int ID)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            if (ID != 0)
+            {
+                var Order = OrderServices.Instance.GetOrderById(ID);
+
+                Order.Confirmation = "Yes";
+                
+                OrderServices.Instance.UpdateOrder(Order);
+
+            }
+
+            return RedirectToAction("ConfirmedOrders");
         }
 
 
@@ -339,7 +494,7 @@ namespace DRS.Controllers
                 Order.Note = model.Note;
                 Order.Plate = model.Plate;
                 Order.Chassis = model.Chassis;
-                //Order.IDUser = user.Name;
+                Order.IDUser = user.Name;
                 Order.Date = DateTime.Now;
                 Order.DeliveryDate = model.DeliveryDate;
                 Order.Reminder1 = model.Reminder1;
@@ -348,6 +503,7 @@ namespace DRS.Controllers
                 Order.Attachment = model.Attachment;
                 Order.Received = model.Received;
                 Order.AlternativeCode = model.AlternativeCode;
+                Order.File = model.Photo;
                 Order.Unavailability = CalculateDaysBetweenDates(Order.Date);
                 checker = 1;
                 OrderServices.Instance.UpdateOrder(Order);
@@ -363,8 +519,9 @@ namespace DRS.Controllers
                 Order.Note = model.Note;
                 Order.Plate = model.Plate;
                 Order.Chassis = model.Chassis;
-                //Order.IDUser = user.Name;               
+                Order.IDUser = user.Name;               
                 Order.Date = DateTime.Now;
+
                 Order.Unavailability = CalculateDaysBetweenDates(Order.Date);
                 OrderServices.Instance.CreateOrder(Order);
 

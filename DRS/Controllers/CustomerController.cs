@@ -12,6 +12,7 @@ using OfficeOpenXml.Style;
 
 namespace DRS.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CustomerController : Controller
     {
         // GET: Customer
@@ -55,6 +56,7 @@ namespace DRS.Controllers
                 model.Note = Customer.Note;
                 model.Alias = Customer.Alias;
                 model.Logo = Customer.Logo;
+                model.Erp = Customer.Erp;
 
             }
             return View("Action", model);
@@ -74,6 +76,7 @@ namespace DRS.Controllers
             tableData.Columns.Add("Whatsapp", typeof(string)); // Replace "Column2" with the actual column nam
             tableData.Columns.Add("Email", typeof(string)); // Replace "Column2" with the actual column name
             tableData.Columns.Add("Note", typeof(string)); // Replace "Column2" with the actual column name
+            tableData.Columns.Add("Erp", typeof(string));
 
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
@@ -87,7 +90,7 @@ namespace DRS.Controllers
                 row["Whatsapp"] = item.Whatsapp;
                 row["Email"] = item.Email;
                 row["Note"] = item.Note;
-               
+                row["Erp"] = item.Erp;
 
                 tableData.Rows.Add(row);
             }
@@ -207,6 +210,14 @@ namespace DRS.Controllers
                             {
                                 Customer.Note = "Not Specified";
                             }
+                            if (worksheet.Cells[row, 7].Value != null)
+                            {
+                                Customer.Erp = worksheet.Cells[row, 7].Value.ToString();
+                            }
+                            else
+                            {
+                                Customer.Erp = "Not Specified";
+                            }
 
                             items.Add(Customer);
                             CustomerServices.Instance.CreateCustomer(Customer);
@@ -247,6 +258,7 @@ namespace DRS.Controllers
                 Customer.Note = model.Note;
                 Customer.Alias = model.Alias;
                 Customer.Logo = model.Logo;
+                Customer.Erp = model.Erp;
 
 
                 CustomerServices.Instance.UpdateCustomer(Customer);
@@ -262,6 +274,8 @@ namespace DRS.Controllers
                 Customer.Note = model.Note;
                 Customer.Alias = model.Alias;
                 Customer.Logo = model.Logo;
+                Customer.Erp = model.Erp;
+
 
                 CustomerServices.Instance.CreateCustomer(Customer);
               

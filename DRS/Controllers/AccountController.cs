@@ -92,7 +92,7 @@ namespace DRS.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var user = await UserManager.FindByEmailAsync(model.Email);
+            var user = await UserManager.FindByNameAsync(model.Name);
             if (user != null)
             {
                 Session["User"] = user.Name;
@@ -482,9 +482,8 @@ namespace DRS.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
+
+        public ActionResult Logout()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login", "Account");
@@ -537,22 +536,29 @@ namespace DRS.Controllers
                 ModelState.AddModelError("", error);
             }
         }
-
+        //public ActionResult Logout()
+        //{
+        //    // Sign out the user
+        //    //HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+        //    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+        //    return RedirectToAction("Login", "Account"); // Redirect to the home page or any other desired page.
+        //}
         private ActionResult RedirectToLocal(string returnUrl)
         {
             var userID = Session["ID"].ToString();
-            if (Url.IsLocalUrl(returnUrl))
+            var user = UserManager.FindById(userID);
+            //if (Url.IsLocalUrl(returnUrl))
+            //{
+            //    return Redirect(returnUrl);
+            //}
+            if (user.Role == "Admin")
             {
-                return Redirect(returnUrl);
-            }
-            if (UserManager.IsInRole(userID, "Admin") == true)
-            {
-                return RedirectToAction("Dashboard", "Admin");
+                return RedirectToAction("Index", "Order");
 
             }
-            else if (UserManager.IsInRole(userID, "Copywriter") == true)
+            else if (user.Role == "User")
             {
-                return RedirectToAction("Dashboard", "Copywriter");
+                return RedirectToAction("ReceivedOrders", "Order");
             }
             else
             {

@@ -78,8 +78,9 @@ namespace DRS.Services
         {
             using (var context = new DSContext())
             {
-                var data = context.brands.ToList();
-                data.Reverse();
+                var data = context.brands
+                    .OrderBy(b => b.Description) // Order by Description property in ascending order
+                    .ToList();
                 return data;
             }
         }

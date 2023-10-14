@@ -32,7 +32,11 @@
 
     .setter {
         position: relative;
-        left: -108px;
+        left: -139px;
+    }
+    .setter2 {
+        position: relative;
+        left: -385px;
     }
 </style>
 @if (Model != null)
@@ -60,7 +64,7 @@
                                 <input class="form-control" id="PhotoUpload" name="PhotoUpload" type="file" accept=".png, .jpg, .jpeg" />
 
                                 <div class="thumb">
-                                    <img style="height:100px; width:100px" class="img-thumbnail img-fluid" id="PhotoImg" />
+                                    <img style="height:100px; width:100px" class="img-thumbnail img-fluid" id="PhotoImg" src="@Model.Logo" />
                                 </div>
                             </div>
                             <div class="form-group col-md-3">
@@ -75,19 +79,27 @@
                                 <label for="Email">Email  &nbsp;</label>
                                 <input value="@Model.Email" type="text" class="form-control" name="Email" id="Email" />
                             </div>
-                           
+
 
                         </div>
                         <div class="row setter">
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-4">
                                 <label for="Telephone">Telephone&nbsp;</label>
                                 <input value="@Model.Telephone" type="text" class="form-control" name="Telephone" id="Telephone" />
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-4">
                                 <label for="Whatsapp">Whatsapp &nbsp;</label>
                                 <input value="@Model.Whatsapp" type="text" class="form-control" name="Whatsapp" id="Whatsapp" />
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
+                                <label for="Erp">Erp &nbsp;</label>
+                                <input value="@Model.Erp" type="text" class="form-control" name="Erp" id="Erps" />
+                            </div>
+
+                        </div>
+                        <div class="row setter2">
+                          
+                            <div class="form-group col-md-12">
                                 <label for="Note">Note &nbsp;</label>
                                 <input value="@Model.Note" type="text" class="form-control" name="Note" id="Note" />
                             </div>

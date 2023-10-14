@@ -17,18 +17,18 @@
                                 <th>
                                     Image
                                 </th>
-                                <th>
+                                @*<th>
                                     ID
-                                </th>
+                                </th>*@
                                 <th>
-                                    Name
+                                    Nome
                                 </th>
 
                                 <th>
-                                    Surname
+                                    Cognome
                                 </th>
                                 <th>
-                                    Branch
+                                    Filiale
                                 </th>
                                 <th>
                                     Profile
@@ -55,7 +55,7 @@
 
                                         }
                                     </td>
-                                    <td>@item.Id</td>
+                                    @*<td>@item.Id</td>*@
                                     <td>@item.Name</td>
                                     <td>@item.Surname</td>
                                     <td>@item.Branch</td>
@@ -67,9 +67,9 @@
                                     }
                                     </td>
                                     <td>
-                                        <button data-href="@Url.Action("Action", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-info btn-icon-text btn-rounded" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-pencil"></i> EDIT</button>
-                                        <button data-href="@Url.Action("Delete", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-danger btn-icon-text btn-rounded" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>
-                                        <button data-href="@Url.Action("UserRoles", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-success btn-icon-text btn-rounded" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-account-details"></i>ROLES</button>
+                                        <button data-href="@Url.Action("Action", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-sm btn-info btn-icon-text btn-rounded" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-pencil"></i> EDIT</button>
+                                        <button data-href="@Url.Action("Delete", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-sm btn-danger btn-icon-text btn-rounded" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-delete"></i>DELETE</button>
+                                        <button data-href="@Url.Action("UserRoles", "User", new { ID = item.Id })" type="button" class="data-btn btn btn-sm btn-success btn-icon-text btn-rounded" data-toggle="modal" data-target="#actionModal"><i class="mdi mdi-account-details"></i>ROLES</button>
 
                                     </td>
                                 </tr>

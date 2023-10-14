@@ -79,8 +79,30 @@ namespace DRS.Services
         {
             using (var context = new DSContext())
             {
-                var data = context.orders.Where(x => x.Received== null ).ToList();
-                data.Reverse();
+                var data = context.orders.Where(x => x.Received== null )
+                    .OrderBy(b => b.Date)
+                    .ToList();
+                return data;
+            }
+        }
+        public List<Order> GetReceivedOrders()
+        {
+            using (var context = new DSContext())
+            {
+                var data = context.orders.Where(x => x.Received == "on" && x.Confirmation != "Yes")
+                    .OrderBy(b => b.Date)
+                    .ToList();
+                return data;
+            }
+        }
+
+        public List<Order> GetConfirmedOrders()
+        {
+            using (var context = new DSContext())
+            {
+                var data = context.orders.Where(x => x.Received == "on" && x.Confirmation == "Yes")
+                    .OrderBy(b => b.Date)
+                    .ToList();
                 return data;
             }
         }

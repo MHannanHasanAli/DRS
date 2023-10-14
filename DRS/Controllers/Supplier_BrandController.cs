@@ -12,6 +12,7 @@ using OfficeOpenXml.Style;
 
 namespace DRS.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class Supplier_BrandController : Controller
     {
         // GET: Supplier_Brand

@@ -113,6 +113,18 @@
     <Compile Include="Migrations\202310091116227_Picolo.designer.cs">
       <DependentUpon>202310091116227_Picolo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310140737068_Bardock.cs" />
+    <Compile Include="Migrations\202310140737068_Bardock.designer.cs">
+      <DependentUpon>202310140737068_Bardock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310140825249_Krillin.cs" />
+    <Compile Include="Migrations\202310140825249_Krillin.designer.cs">
+      <DependentUpon>202310140825249_Krillin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310141054070_OmegaShenron.cs" />
+    <Compile Include="Migrations\202310141054070_OmegaShenron.designer.cs">
+      <DependentUpon>202310141054070_OmegaShenron.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DSContext.cs" />
@@ -169,6 +181,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202310091116227_Picolo.resx">
       <DependentUpon>202310091116227_Picolo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310140737068_Bardock.resx">
+      <DependentUpon>202310140737068_Bardock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310140825249_Krillin.resx">
+      <DependentUpon>202310140825249_Krillin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310141054070_OmegaShenron.resx">
+      <DependentUpon>202310141054070_OmegaShenron.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

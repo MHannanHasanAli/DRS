@@ -78,8 +78,9 @@ namespace DRS.Services
         {
             using (var context = new DSContext())
             {
-                var data = context.branches.ToList();
-                data.Reverse();
+                var data = context.branches
+                    .OrderBy(b => b.Description)
+                    .ToList();
                 return data;
             }
         }

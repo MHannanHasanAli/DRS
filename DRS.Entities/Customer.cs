@@ -16,6 +16,7 @@ namespace DRS.Entities
         public string Whatsapp { get; set; }
         public string Email { get; set; }
         public string Note { get; set; }
+        public string Erp { get; set; }
 
     }
 }

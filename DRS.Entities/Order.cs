@@ -25,5 +25,7 @@ namespace DRS.Entities
         public string Received { get; set; }
         public string Attachment { get; set; }
         public string AlternativeCode { get; set; }
+        public string File { get; set; }
+        public string Confirmation { get; set; }
     }
 }

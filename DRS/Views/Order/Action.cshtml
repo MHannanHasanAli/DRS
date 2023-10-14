@@ -42,6 +42,15 @@
         display: flex;
         justify-content:space-between;
     }
+    #headingAtTable {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+        #headingAtTable h4 {
+            margin-top: -8px;
+            margin-bottom: -8px;
+        }
 </style>
 @if (Model != null)
 {
@@ -153,7 +162,7 @@
                                 }
                                 else
                                 {
-                                    @Html.TextBox("DeliveryDate", DateTime.Now, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "DeliveryDate", @class = "form-control", type = "date" })
+                                    @Html.TextBox("DeliveryDate", Model.DeliveryDate, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "DeliveryDate", @class = "form-control", type = "date" })
                                 }
                             </div>
                             <div class="form-group col-md-3">
@@ -163,7 +172,7 @@
                             }
                             else
                             {
-                                @Html.TextBox("Reminder1", DateTime.Now, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder1", @class = "form-control", type = "date" })
+                                @Html.TextBox("Reminder1", Model.Reminder1, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder1", @class = "form-control", type = "date" })
                                 @*<input value="@Model._Date" type="date" class="form-control" name="_Date" id="_Date" placeholder="Enter cost" />*@
                             }
                                 @*<input value="@Model._ShipByDate" type="date" class="form-control" name="_ShipByDate" id="_ShipByDate" />*@
@@ -175,7 +184,7 @@
                             }
                             else
                             {
-                                @Html.TextBox("Reminder2", DateTime.Now, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder2", @class = "form-control", type = "date" })
+                                @Html.TextBox("Reminder2", Model.Reminder2, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder2", @class = "form-control", type = "date" })
                                 @*<input value="@Model._Date" type="date" class="form-control" name="_Date" id="_Date" placeholder="Enter cost" />*@
                             }
                                 @*<input value="@Model._ShipByDate" type="date" class="form-control" name="_ShipByDate" id="_ShipByDate" />*@
@@ -183,11 +192,11 @@
                             <div class="form-group col-md-3">
                                 <label for="Reminder3">Sol 3 &nbsp;</label>
                                 @if (Model.Reminder3 != null)
-                                {@Html.TextBox("Reminder3", Model.Reminder2, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder3", @class = "form-control", type = "date" })
+                                {@Html.TextBox("Reminder3", Model.Reminder3, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder3", @class = "form-control", type = "date" })
                             }
                             else
                             {
-                                @Html.TextBox("Reminder3", DateTime.Now, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder3", @class = "form-control", type = "date" })
+                                @Html.TextBox("Reminder3", Model.Reminder3, "{0:yyyy-MM-dd}", new { @style = "width:100%", @id = "Reminder3", @class = "form-control", type = "date" })
                                 @*<input value="@Model._Date" type="date" class="form-control" name="_Date" id="_Date" placeholder="Enter cost" />*@
                             }
                             </div>
@@ -205,27 +214,47 @@
                                     <input type="checkbox" class="form-control" name="Received" id="Received" />
                                 </div>
                             }
-                            if (@Model.Attachment == "on")
+
+                            if (Model.ID != 0)
                             {
                                 <div class="form-group col-md-3">
-                                    <label for="Attachment">Allegato&nbsp;</label>
-                                    <input type="checkbox" class="form-control" name="Attachment" id="Attachment" checked />
+                                    <label>Allegato</label>
+
+                                    <input class="form-control" value="@Model.Photo" name="Photo" id="Photo" type="hidden" />
+                                    <input class="form-control" id="PhotoUpload" name="PhotoUpload" type="file" accept=".png, .jpg, .jpeg" />
+
+                                    <div class="thumb">
+                                        <img style="height:100px; width:100px" class="img-thumbnail img-fluid" id="PhotoImg" src="@Model.Photo" />
+                                    </div>
                                 </div>
+
                             }
-                            else
-                            {
-                                <div class="form-group col-md-3">
-                                    <label for="Attachment">Allegato&nbsp;</label>
-                                    <input type="checkbox" class="form-control" name="Attachment" id="Attachment" />
-                                </div>
-                            }
+
+                            @*if (@Model.Attachment == "on")
+            {
+                <div class="form-group col-md-3">
+                    <label for="Attachment">Allegato&nbsp;</label>
+                    <input type="checkbox" class="form-control" name="Attachment" id="Attachment" checked />
+                </div>
+            }
+            else
+            {
+                <div class="form-group col-md-3">
+                    <label for="Attachment">Allegato&nbsp;</label>
+                    <input type="checkbox" class="form-control" name="Attachment" id="Attachment" />
+                </div>
+            }*@
 
                         }
 
 
 
                     </div>
-
+                    <hr />
+                    <div id="headingAtTable">
+                        <h4>Items</h4>
+                    </div>
+                    <hr />
                     <div class="row">
                         <div class="col-md-12 table-responsive">
                             <table class="table" id="ProductsTable">
@@ -271,9 +300,9 @@
                                     @if (Model.ID != 0)
                                     {
                                         <tr>
-                                            <td>@Model.ItemCode</td>
-                                            <td>@Model.Quantity</td>
-                                            <td>@Model.Description</td>
+                                            <td id="codeupdate">@Model.ItemCode</td>
+                                            <td id="quantityupdate">@Model.Quantity</td>
+                                            <td id="descriptionupdate">@Model.Description</td>
                                             <td>@Model.NoteItem</td>
                                         </tr>
                                     }
@@ -299,7 +328,7 @@
                 </div>
             </div>
             <div style="background-color:white;" class="card-footer container-bottom">
-                <a href="@Url.Action("Index","Order")" class="btn btn-danger backbtn-rounded"><i class="fas fa-times mr-1"></i> Cancel</a>
+                <a href="@Url.Action("Index","Order")" class="btn btn-danger back btn-rounded"><i class="fas fa-times mr-1"></i> Cancel</a>
                 @if (Model.ID != 0)
                 {
                     <button id="actionButton" type="button" class="btn btn-success btn-rounded"><i class="fas fa-save mr-1"></i> Update</button>
@@ -332,6 +361,11 @@
                     <h5 id="selectedTelaio"></h5>
                 </div>
                 <hr />
+                <hr />
+                <div id="headingAtTable">
+                    <h4>Items</h4>
+                </div>
+                <hr />
                 <table class="table table-borderless">
                     <thead>
                         <tr>
@@ -345,8 +379,10 @@
                     </tbody>
                 </table>
                 <hr />
+
+
                 <br />
-                
+
                 <h5 id="selectedBranch"></h5>
             </div>
             <div class="modal-footer">
@@ -450,7 +486,7 @@ if (selectedSupplierID !== 'null') {
         });
     });
     $("#actionButton").click(function () {
-        
+        var id = '@Model.ID';
         var selectedBrandName = $("#IDBrand option:selected").text();
         var selectedTarga = $("#Plate").val();
         var selectedTelaio = $("#Chassis").val();
@@ -468,25 +504,44 @@ if (selectedSupplierID !== 'null') {
             $("#selectedTelaio").hide();
         }
         var selectedRowsHtml = "";
-        $('#ProductsTable tbody tr').each(function () {
-            var description = $(this).find('td:eq(3) input').val();
-            var orderCode = $(this).find('td:eq(1) input').val();
-            var quantita = $(this).find('td:eq(2) input').val();
 
-            selectedRowsHtml += `
+        if (id !== 0) {
+            debugger
+            var description = $('#descriptionupdate').text();
+            var orderCode = $('#codeupdate').text();
+            var quantita = $('#quantityupdate').text();
+
+                selectedRowsHtml += `
             <tr>
                 <td>${description}</td>
                 <td>${orderCode}</td>
                 <td>${quantita}</td>
             </tr>`;
-        });
+         
+        } else {
+            $('#ProductsTable tbody tr').each(function () {
+                var description = $(this).find('td:eq(3) input').val();
+                var orderCode = $(this).find('td:eq(1) input').val();
+                var quantita = $(this).find('td:eq(2) input').val();
+
+                selectedRowsHtml += `
+            <tr>
+                <td>${description}</td>
+                <td>${orderCode}</td>
+                <td>${quantita}</td>
+            </tr>`;
+            });
+        }
+       
+       
+        
 
         // Update the table body in the modal with the collected rows
         $("#selectedRowsTableBody").html(selectedRowsHtml);
 
         // Get the selected branch from the dropdown
         var selectedBranch = $("#IDBranch option:selected").text();
-        $("#selectedBranch").text("Branch: " + selectedBranch);
+        $("#selectedBranch").text("Filiale: " + selectedBranch);
 
         // Show the confirmation modal
         $("#confirmationModal").modal("show");
@@ -655,7 +710,7 @@ if (selectedSupplierID !== 'null') {
 
                 console.log(response);
                 if (response.Success) {
-                    $("#_Photo").val(response.DocURL);
+                    $("#Photo").val(response.DocURL);
                     $("#PhotoImg").attr("src", response.DocURL);
 
                 }
